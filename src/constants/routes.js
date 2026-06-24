@@ -3,7 +3,7 @@ export const ROUTES = {
   TEST: "/test",
 
   LOGIN: "/auth/login",
-  REGISTER: "auth/register"
+  REGISTER: "/auth/register"
 
-  
+
 }
