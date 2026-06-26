@@ -39,6 +39,18 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${customFont.variable} h-full antialiased`}
     >
+      <link
+        href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css"
+        rel="stylesheet"
+      ></link>
+      <link
+        href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css"
+        rel="stylesheet"
+      ></link>
+      <link
+        href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css"
+        rel="stylesheet"
+      ></link>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

@@ -32,18 +32,6 @@ const Register = () => {
 
   return (
     <section>
-      <link
-        href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css"
-        rel="stylesheet"
-      ></link>
-      <link
-        href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css"
-        rel="stylesheet"
-      ></link>
-      <link
-        href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css"
-        rel="stylesheet"
-      ></link>
       <div className="flex items-center w-full h-screen justify-between px-16">
         <Image src={illus} alt="Auth ilustration" className="ml-36" />
         <div className="flex flex-col gap-6 justify-center h-full w-full max-w-141.5 items-center">
