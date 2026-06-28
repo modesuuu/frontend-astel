@@ -1,4 +1,3 @@
-import profileService from "@/services/profile.service.js";
 
 export function getToken() {
   if (typeof window === "undefined") return null;

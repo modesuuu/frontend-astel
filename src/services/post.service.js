@@ -11,6 +11,20 @@ const postService = {
     return res.data;
   },
 
+  async getUserPosts(userId) {
+    if (!userId) {
+      throw new Error("User ID tidak tersedia");
+    }
+
+    const res = await api.get(`/profiles/${userId}/posts`);
+
+    if (!res.data?.success) {
+      throw new Error(res.data?.message || "Gagal mengambil postingan pengguna");
+    }
+
+    return Array.isArray(res.data?.data) ? res.data.data : [];
+  },
+
   async createPost(payload) {
     const res = await api.post("/posts", payload);
     return res.data;

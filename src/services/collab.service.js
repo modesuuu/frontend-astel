@@ -6,8 +6,9 @@ const collabService = {
     return res.data;
   },
 
-  async getMyCollabs() {
-    const res = await api.get("/collab/me");
+  async getMyCollabs(id) {
+    const res = await api.get(`profiles/${id}/collab`); 
+    console.log("dari service", res.data);
     return res.data;
   },
 

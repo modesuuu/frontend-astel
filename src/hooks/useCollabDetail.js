@@ -15,6 +15,7 @@ export default function useCollabDetail(collabId) {
       setError(null);
       const data = await collabService.getCollab(collabId);
       setCollab(data);
+      // console.log("dari useCollabDetail",data);
     } catch (err) {
       setError(err.response?.data?.message || "Gagal mengambil detail kolaborasi");
     } finally {

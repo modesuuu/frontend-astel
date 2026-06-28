@@ -1,73 +1,71 @@
 "use client";
-import PostGallery from '@/components/feed/PostGallery'
-import Sidebar from '@/components/layout/Sidebar'
-import React, { useState } from 'react'
-import Header from '@/components/layout/Header'
-import Profile from '@/components/profile/Profile';
-import PostContent from '@/components/feed/PostContent';
-import Link from 'next/link';
+import PostGallery from "@/components/feed/PostGallery";
+import Sidebar from "@/components/layout/Sidebar";
+import React, { useState } from "react";
+import Header from "@/components/layout/Header";
+import Profile from "@/components/profile/Profile";
+import PostContent from "@/components/feed/PostContent";
+import Link from "next/link";
 
 // dummy images
-import img1 from '@/assets/images/dummy/image1.png'
-import img2 from '@/assets/images/dummy/image2.png'
-import img3 from '@/assets/images/dummy/image3.png'
-import img4 from '@/assets/images/dummy/image4.png'
-import img5 from '@/assets/images/dummy/image5.png'
-import InteractionStats from '@/components/ui/InteractionStats';
+import img1 from "@/assets/images/dummy/image1.png";
+import img2 from "@/assets/images/dummy/image2.png";
+import img3 from "@/assets/images/dummy/image3.png";
+import img4 from "@/assets/images/dummy/image4.png";
+import img5 from "@/assets/images/dummy/image5.png";
+import InteractionStats from "@/components/ui/InteractionStats";
+import usePosts from "@/hooks/usePosts.js";
+import timeAgo from "@/utils/timeAgo.js";
+import { ROUTES } from "@/constants/routes.js";
+import { useRouter } from "next/navigation.js";
 
 const Feeds = () => {
+  // dumy data wok
+  const { posts, isLoading, error, refreshPosts: refreshPost } = usePosts();
+  const router = useRouter( );
 
-    // dumy data wok
-    const dummyPost = {
-        id: "post-russel-01",
-        username: "Russel",
-        time: "2 hours ago",
-        content: "Hi everyone, today I was on the most beautiful mountain in the world, I also want to say hi to Silena, Olya and Davis! Kebetulan pemandangannya indah banget dan udaranya segar sekali di sini. Kami mendaki dari jam 4 subuh demi mengejar momen sunrise yang golden hour banget! Jangan lupa buat mampir ke sini kalau kalian lagi liburan ya guys!",
-        // dummy media
-        media: [
-            img1,
-            img2,
-            img3,
-            img4,
-        ]
-    };
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
-    const samplePostData = {
-        views: 1240,
-        likes: 342,
-        comments: 18
-    };
+  return (
+    <section className="pt-6 relative">
+      <div className="mx-60">
+        <Header />
+        <div className="flex flex-col gap-6">
+          {/* mulai mapping dari sini */}
 
-    return (
-        <section className="pt-6 relative">
-            <div className="mx-60">
-                <Header />
-                <div className="flex flex-col gap-6">
-                    <div className="flex flex-col gap-6 mt-6">
-                        <Profile avatar={dummyPost.avatarUrl} name={dummyPost.username} time={dummyPost.time} />
+          {posts.data.map((post) => (
+            <div key={post._id} className="flex flex-col gap-6 mt-6">
+              <Profile
+                avatar={post?.userId.photo_profile_url}
+                name={post?.userId.username}
+                time={timeAgo(post?.createdAt)}
+              />
 
-                        <div className="flex flex-col">
-                            <PostContent content={dummyPost.content} />
-                            <Link href={`/dasboard/feed/${dummyPost.id}`}><h1>View Details test</h1></Link>
-                            <PostGallery images={dummyPost.media} />
-                            <InteractionStats initialStats={samplePostData} feedId={dummyPost.id} />
-                        </div>
-                    </div>
+              <div className="flex flex-col">
+                <PostContent content={post?.description} />
 
-                    {/* dummy2 */}
-                    <div className="flex flex-col gap-6 mt-6">
-                        <Profile avatar={dummyPost.avatarUrl} name={dummyPost.username} time={dummyPost.time} id={dummyPost.id} />
+                  <h1 className="text-sm font-medium text-primary cursor-pointer" onClick={() => router.push(ROUTES.POST_DETAIL(post?._id))}>View Details</h1>
 
-                        <div className="flex flex-col">
-                            <PostContent content={dummyPost.content} />
-                            <PostGallery images={dummyPost.media} />
-                            <InteractionStats initialStats={samplePostData} feedId={dummyPost.id} />
-                        </div>
-                    </div>
-                </div>
+                <PostGallery images={post?.mediaUrls} />
+
+                <InteractionStats
+                  initialStats={{
+                    views: post?.viewCount,
+                    likes: post?.likeCount,
+                    isLiked: post?.isLiked,
+                    comments: post?.commentCount,
+                  }}
+                  feedId={post?._id}
+                  refreshPosts={refreshPost}
+                />
+              </div>
             </div>
-        </section>
-    )
-}
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
-export default Feeds
+export default Feeds;

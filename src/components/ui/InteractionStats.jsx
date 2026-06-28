@@ -1,75 +1,68 @@
-"use block";
 "use client";
-import React, { useState } from 'react';
-import Link from 'next/link';
 
-const InteractionStats = ({ initialStats, feedId }) => {
+import Link from "next/link";
+import { ROUTES } from "@/constants/routes";
+import usePostAction from "@/hooks/usePostAction";
 
-    const formatNumber = (num) => {
-        if (num >= 1000) {
-            return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-        }
-        return num;
-    };
+const InteractionStats = ({ initialStats, feedId, refreshPosts }) => {
+  const { like, unlike } = usePostAction();
 
-    // State internal dinamis untuk simulasi interaksi langsung
-    const [likes, setLikes] = useState(initialStats?.likes || 0);
-    const [isLiked, setIsLiked] = useState(false);
+  const formatNumber = (num) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  };
 
-    const [commentsCount, setCommentsCount] = useState(initialStats?.comments || 0);
-    const [views, setViews] = useState(initialStats?.views || 0);
+  const handleLikeToggle = async () => {
+    if (initialStats.isLiked) {
+      await unlike(feedId);
+    } else {
+      await like(feedId);
+    }
 
-    const handleLikeToggle = () => {
-        if (isLiked) {
-            setLikes(prev => prev - 1);
-            setIsLiked(false);
-        } else {
-            setLikes(prev => prev + 1);
-            setIsLiked(true);
-        }
-    };
+    await refreshPosts();
+  };
+  // console.log("initialStats", initialStats);
+  return (
+    <div className="flex items-center gap-3 px-5 py-2.5 rounded-2xl w-fit">
+      <div className="flex items-center gap-1.5 text-xs text-gray-400">
+        <i className="bx bx-eye-alt text-lg"></i>
 
-    const detailFeedUrl = `/dasboard/feed/${feedId}`;
+        <span>{formatNumber(initialStats.views)}</span>
+      </div>
 
-    return (
-        <div className="flex items-center gap-3 dark:bg-gray-900 dark:border-gray-800/60 px-5 py-2.5 rounded-2xl w-fit  select-none transition-colors">
+      <div className="w-px h-4 bg-gray-200" />
 
-            {/* 1. STATS: VIEWS (Hanya Baca / Statis) */}
-            <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 text-xs">
-                <i className="bx bx-eye-alt text-lg"></i>
-                <span className="font-medium tabular-nums">
-                    {formatNumber(views)}
-                </span>
-            </div>
+      <button
+        onClick={handleLikeToggle}
+        className={`flex items-center gap-1.5 text-xs transition ${
+          initialStats.isLiked
+            ? "text-rose-500"
+            : "text-gray-400 hover:text-rose-500"
+        }`}
+      >
+        <i
+          className={`text-lg ${
+            initialStats.isLiked ? "bx bx-heart" : "bx bx-heart"
+          }`}
+        />
 
-            <div className="w-px h-4 bg-gray-200 dark:bg-gray-800" />
+        <span>{formatNumber(initialStats.likes)}</span>
+      </button>
 
-            {/* 2. STATS: LIKES (Dinamis & Interaktif) */}
-            <button
-                type="button"
-                onClick={handleLikeToggle}
-                className={`flex items-center gap-1.5 text-xs font-medium transition-all duration-200 active:scale-95 focus:outline-none cursor-pointer ${isLiked
-                        ? 'text-rose-500 dark:text-rose-400 scale-105'
-                        : 'text-gray-400 dark:text-gray-500 hover:text-rose-500 dark:hover:text-rose-400'
-                    }`}
-            >
-                <i className={`text-lg transition-transform duration-200 ${isLiked ? 'bx bxs-heart animate-ping-once' : 'bx bx-heart'}`}></i>
-                <span className="tabular-nums">{formatNumber(likes)}</span>
-            </button>
+      <div className="w-px h-4 bg-gray-200" />
 
-            <div className="w-px h-4 bg-gray-200 dark:bg-gray-800" />
+      <Link
+        href={ROUTES.POST_DETAIL(feedId)}
+        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-indigo-500"
+      >
+        <i className="bx bx-message-circle text-lg"></i>
 
-            {/* 3. STATS: COMMENTS (Interaktif / Trigger Modal atau Fitur Lain) */}
-            <Link
-                href={detailFeedUrl}
-                className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 hover:text-indigo-500 dark:hover:text-indigo-400 text-xs font-medium transition-all duration-200 active:scale-95 focus:outline-none cursor-pointer"
-            >
-                <i className="bx bx-message-circle text-lg"></i>
-                <span className="tabular-nums">{formatNumber(commentsCount)}</span>
-            </Link>
+        <span>{formatNumber(initialStats.comments)}</span>
+      </Link>
+    </div>
+  );
+};
 
-        </div>
-    )
-}
-
-export default InteractionStats
+export default InteractionStats;

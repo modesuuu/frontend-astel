@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import authService from "@/services/auth.service";
-import { ROUTES } from "@/constants/routes.js";
+import profileService from "@/services/profile.service.js";
 
 // =========================================================
 // useRegister
@@ -62,7 +62,6 @@ export function useLogin() {
     try {
       const data = await authService.login(payload);
       localStorage.setItem("token", data.data.token); // simpan token
-      router.push(ROUTES.HOME);
       return data;
     } catch (err) {
       setError(err.response?.data?.message || "Username atau password salah");
@@ -90,37 +89,35 @@ export function useLogin() {
 //   profile.skills          → [{ _id, skillName }, ...]
 //   profile.socialMedia     → [{ _id, platform, url }, ...]
 // =========================================================
-export function useProfile() {
+export function useAuthMe() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetch = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await authService.getProfile();
-        setProfile(data.data); // langsung ambil .data biar temen ga perlu .data.data
-      } catch (err) {
-        setError(err.response?.data?.message || "Gagal ambil profile");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetch();
+  const fetch = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await authService.me();
+      setProfile(data);
+      console.log("dari useAuthMe", data); // langsung ambil .data biar temen ga perlu .data.data
+    } catch (err) {
+      setError(err.response?.data?.message || "Gagal ambil profile");
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  return { profile, isLoading, error };
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { profile, isLoading, error, refreshProfile: fetch };
 }
 
 // =========================================================
 // useUpdateProfile
-// =========================================================
-// Cara pakai di komponen temen:
-//
-// const { updateProfile, isLoading, error, isSuccess } = useUpdateProfile();
+// =========================================================pduseUpdateProfile();
 //
 // <button onClick={() => updateProfile({ fullName, bio, photo_profile_url, skills, socialMedia })}>
 //   Simpan
@@ -138,11 +135,12 @@ export function useUpdateProfile() {
     setError(null);
     setIsSuccess(false);
     try {
-      const data = await authService.updateProfile(payload);
+      const data = await profileService.update(payload);
       setIsSuccess(true);
       return data;
     } catch (err) {
-      setError(err.response?.data?.message || "Gagal update profile");
+      setError("Gagal update profile");
+      console.log(err);
     } finally {
       setIsLoading(false);
     }

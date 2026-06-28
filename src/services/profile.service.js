@@ -1,8 +1,8 @@
 import api from "@/libs/axios.js";
 
 const profileService = {
-  async me() {
-    const res = await api.get("/profiles/me");
+  async getProfile(userId) {
+    const res = await api.get(`/profiles/${userId}`);
     return res.data;
   },
 
@@ -14,6 +14,20 @@ const profileService = {
   async getSkills() {
     const res = await api.get("/skills");
     return res.data;
+  },
+
+  async getUserPosts(userId) {
+    if (!userId) {
+      throw new Error("User ID tidak tersedia");
+    }
+
+    const res = await api.get(`/profiles/${userId}/posts`);
+
+    if (!res.data?.success) {
+      throw new Error(res.data?.message || "Gagal mengambil postingan pengguna");
+    }
+
+    return Array.isArray(res.data?.data) ? res.data.data : [];
   },
 };
 

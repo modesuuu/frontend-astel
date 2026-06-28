@@ -3,9 +3,9 @@ import React from 'react'
 const SocialMediaLinks = ({ links }) => {
 
     const defaultLinks = [
-        { platform: "Instagram", url: "https://instagram.com", icon: "bxl bx-instagram" },
-        { platform: "Linkedin", url: "https://linkedin.com", icon: "bxl bx-linkedin" },
-        { platform: "Github", url: "https://github.com", icon: "bxl bx-github" }
+        // { platform: "Instagram", url: "https://instagram.com", icon: "bxl bx-instagram" },
+        // { platform: "Linkedin", url: "https://linkedin.com", icon: "bxl bx-linkedin" },
+        // { platform: "Github", url: "https://github.com", icon: "bxl bx-github" }
     ];
 
     const activeLinks = links || defaultLinks;

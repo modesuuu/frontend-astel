@@ -11,7 +11,7 @@ const authService = {
     return res.data;
   },
 
-  async getProfile() {
+  async me() {
     const res = await api.get("/profiles/me");
     return res.data;
   },

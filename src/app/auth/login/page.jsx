@@ -17,6 +17,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(data);
+    router.push(ROUTES.HOME);
+    
   };
 
   const handleChange = (e) => {

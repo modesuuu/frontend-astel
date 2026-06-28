@@ -3,7 +3,7 @@ import RightProfileSidebar from '@/components/rightbar/RightProfileSidebar'
 import React from 'react'
 
 const layout = ({ children }) => {
-
+  
   return (
     <div className="bg-[#F7F6FE] ">
         <main>

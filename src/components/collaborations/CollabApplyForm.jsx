@@ -3,14 +3,14 @@
 import React, { useState } from 'react'
 import CurrentUserProfile from '../profile/CurrentUserProfile';
 
-const CollabApplyForm = ({ onApply }) => {
-
+const CollabApplyForm = (props) => {
+    const { onApply, profileApplicant: profile } = props;
     const [reason, setReason] = useState("");
 
     // BAOK NOTE: nanti data user yang login
     const currentUserData = {
-        name: "Andi", 
-        avatarUrl: "/images/dummy/my-avatar.png"
+        name: profile?.data?.username || "Anda", 
+        avatarUrl: profile?.data?.photo_profile_url || "/images/default-avatar.png"
     };
 
     const handleSubmit = (e) => {

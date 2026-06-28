@@ -15,6 +15,7 @@ export default function usePostDetail(postId) {
       setError(null);
       const data = await postService.getPost(postId);
       setPost(data);
+      console.log("dari usePostDetail",data);
     } catch (err) {
       setError(err.response?.data?.message || "Gagal mengambil detail post");
     } finally {
@@ -33,19 +34,20 @@ export default function usePostDetail(postId) {
     refreshPost: fetchPost,
     like: async () => {
       await postService.likePost(postId);
-      await refreshPost();
+      await fetchPost();
     },
+
     unlike: async () => {
       await postService.unlikePost(postId);
-      await refreshPost();
+      await fetchPost();
     },
     createComment: async (payload) => {
       await postService.createComment(postId, payload);
-      await refreshPost();
+      await fetchPost();
     }, 
     deleteComment: async (commentId) => {
       await postService.deleteComment(commentId);
-      await refreshPost();
+      await fetchPost();
     }
   };
 }

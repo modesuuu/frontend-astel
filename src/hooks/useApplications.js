@@ -32,3 +32,34 @@ export default function useApplications() {
     refreshApplications: fetchApplications,
   };
 }
+
+export function useCreateApplication() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function createApplication(collabId, payload) {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const data = await applicationService.createApplication(
+        collabId,
+        payload,
+      );
+
+      return data;
+    } catch (err) {
+      const message = err.response?.data?.message || "Gagal melamar kolaborasi";
+      setError(message);
+      throw new Error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return {
+    createApplication,
+    isLoading,
+    error,
+  };
+}

@@ -1,13 +1,15 @@
 "use client"
 import React from 'react'
 import { useRouter } from "next/navigation";
+import { ROUTES } from '@/constants/routes.js';
 
 const LogoutBtn = () => {
 
     const router = useRouter();
     const handleLogout = () => {
         //hapus session
-        router.push("/login");
+        localStorage.removeItem("token");
+        router.push(ROUTES.LOGIN);
     }
 
   return (

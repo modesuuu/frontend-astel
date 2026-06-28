@@ -1,57 +1,74 @@
-"use client"
-import CollabCard from '@/components/collaborations/CollabCard';
-import Header from '@/components/layout/Header';
-import React from 'react'
+"use client";
+
+import React from "react";
+import Header from "@/components/layout/Header";
+import CollabCard from "@/components/collaborations/CollabCard";
+import useCollabs from "@/hooks/useCollabs";
+import timeAgo from "@/utils/timeAgo"; // sesuaikan path
 
 const Collaborations = () => {
+  const { collabs, isLoading, error } = useCollabs();
+  console.log(collabs);
 
-    // dummy data
-    const dummyCollabs = [
-        {
-            id: 1,
-            title: "UI/UX Designer Need!!",
-            description: "Hi everyone, today I was on the most beautiful mountain in the world, I also want to say hi to Silena, Olya and Davis!",
-            image: null,
-            author: { username: "Russel", time: "2 hours ago", avatarUrl: "" }
-        },
-        {
-            id: 2,
-            title: "UI/UX Designer Need!!",
-            description: "baok tant to say hi to Silena, Olya and Davis!",
-            image: null,
-            author: { username: "Russel", time: "2 hours ago", avatarUrl: "" }
-        },
-        {
-            id: 3,
-            title: "UI/UX Designer Need!!",
-            description: "Hi everyone, today I was on the most beautiful mountain in the world, I also want to say hi to Silena, Olya and Davis!",
-            image: null,
-            author: { username: "Russel", time: "2 hours ago", avatarUrl: "" }
-        },
-        {
-            id: 4,
-            title: "UI/UX Designer Need!!",
-            description: "Hi everyone, today I was on the most beautiful mountain in the world, I also want to say hi to Silena, Olya and Davis!",
-            image: null,
-            author: { username: "Russel", time: "2 hours ago", avatarUrl: "" }
-        }
-    ];
-
+  if (isLoading) {
     return (
-        <section className="pt-6 relative">
-            <div className="mx-60">
-                {/* Panggil Header tanpa perlu oper state lagi */}
-                <Header />
+      <section className="pt-6 relative min-h-screen">
+        <div className="mx-60">
+          <Header />
+          <div className="mt-6 text-center">
+            <p>Loading...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-                {/* LAYOUT GRID 2 KOLOM UNTUK COLLABORATIONS */}
-                <div className="grid grid-cols-2 gap-6 mt-6">
-                    {dummyCollabs.map((project) => (
-                        <CollabCard key={project.id} project={project} />
-                    ))}
-                </div>
-            </div>
-        </section>
-    )
-}
+  if (error) {
+    return (
+      <section className="pt-6 relative">
+        <div className="mx-60">
+          <Header />
+          <div className="mt-6 text-center text-red-500">
+            <p>{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-export default Collaborations
+  const collaborationList =
+    collabs?.data?.map((item) => ({
+      id: item._id,
+      title: item.title,
+      description: item.description,
+
+      image: item.mediaUrls?.[0] || null,
+
+      requiredMember: item.requiredMember,
+      status: item.status,
+
+      author: {
+        id: item.ownerId._id,
+        username: item.ownerId.username,
+        avatarUrl: item.ownerId.photo_profile_url,
+      },
+      time: item.createdAt,
+    })) || [];
+
+  console.log("collaborationList",collaborationList);
+  return (
+    <section className="pt-6 relative">
+      <div className="mx-60">
+        <Header />
+
+        <div className="grid grid-cols-2 gap-6 mt-6">
+          {collaborationList.map((project) => (
+            <CollabCard key={project.id} project={project} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Collaborations;

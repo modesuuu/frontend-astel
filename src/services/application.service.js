@@ -1,8 +1,8 @@
 import api from "@/libs/axios.js";
 
 const applicationService = {
-  async getApplications(collabId) {
-    const res = await api.get(`/collab/${collabId}/applications`);
+  async getInbox() {
+    const res = await api.get(`/collab/inbox`);
     return res.data;
   },
 
@@ -18,7 +18,7 @@ const applicationService = {
 
   async createApplication(collabId, payload) {
     const res = await api.post(`/collab/${collabId}/applications`, payload);
-    return res.data;
+    return res.data; // ubah
   },
 
   async acceptApplication(applicationId) {

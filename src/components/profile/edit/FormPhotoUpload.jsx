@@ -1,90 +1,105 @@
-import React, { useRef } from 'react'
+"use client";
+import React, { useRef } from "react";
 
+/**
+ * FormPhotoUpload
+ *
+ * Props:
+ *  - value     : string  — current photo URL (blob preview OR existing Cloudinary URL)
+ *  - onChange  : (File | null) => void — called with a File when user picks one,
+ *                                        or null when user removes the photo
+ */
 const FormPhotoUpload = ({ value, onChange }) => {
+  const inputRef = useRef(null);
 
-    const fileInputRef = useRef(null);
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    // Reset input value so selecting the same file again still fires onChange
+    e.target.value = "";
 
-        // Membaca file gambar lokal untuk dijadikan preview string (Base64)
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            // Mengirimkan data string Base64 ke state form utama melalui handler onChange buatan
-            onChange({
-                target: {
-                    name: 'photo_profile_url',
-                    value: reader.result // Ini berisi string data:image/...
-                }
-            });
-        };
-        reader.readAsDataURL(file);
-    };
+    if (!file) return;
 
-    return (
-        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
-            <h2 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-4">
-                Profile Photo
-            </h2>
+    // Basic client-side validation
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Format tidak didukung. Gunakan JPG, PNG, WEBP, atau GIF.");
+      return;
+    }
 
-            <div className="flex flex-col sm:flex-row items-center gap-5">
-                {/* Avatar Preview Box */}
-                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-indigo-500/20 bg-gray-50 dark:bg-gray-800 relative shrink-0 shadow-inner group">
-                    <img
-                        src={value || "/images/default-avatar.png"}
-                        alt="Profile photo preview"
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        onError={(e) => {
-                            e.target.src = "/images/default-avatar.png";
-                        }}
-                    />
-                </div>
+    const maxSizeMb = 5;
+    if (file.size > maxSizeMb * 1024 * 1024) {
+      alert(`Ukuran file maksimal ${maxSizeMb} MB.`);
+      return;
+    }
 
-                {/* Action Controls */}
-                <div className="flex-1 w-full text-center sm:text-left space-y-2">
-                    <label className="block text-xs font-medium text-gray-400 dark:text-gray-500 tracking-wider">
-                        UPLOAD NEW PHOTO
-                    </label>
+    onChange(file);
+  };
 
-                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                        {/* Hidden Native Input File */}
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            onChange={handleFileChange}
-                            accept="image/*"
-                            className="hidden"
-                        />
+  const handleRemove = () => {
+    onChange(null);
+    if (inputRef.current) inputRef.current.value = "";
+  };
 
-                        {/* Custom Styled Button for File Upload */}
-                        <button
-                            type="button"
-                            onClick={() => fileInputRef.current.click()}
-                            className=" items-center px-4 py-2 rounded-xl bg-primary hover:bg-indigo-700 text-white text-xs font-medium shadow-sm transition-colors cursor-pointer"
-                        >
+  return (
+    <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6">
+      <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">
+        Profile Photo
+      </h2>
 
-                            Choose Image File
-                        </button>
-
-                        {value && (
-                            <button
-                                type="button"
-                                onClick={() => onChange({ target: { name: 'photo_profile_url', value: '' } })}
-                                className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-red-50 dark:bg-gray-800 dark:hover:bg-red-950/30 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 text-xs font-medium transition-colors cursor-pointer"
-                            >
-                                Remove
-                            </button>
-                        )}
-                    </div>
-
-                    <p className="text-[11px] text-gray-400 dark:text-gray-500">
-                        Supports JPG, PNG, or WebM files (Max. 2MB).
-                    </p>
-                </div>
+      <div className="flex items-center gap-5">
+        {/* Avatar preview */}
+        <div className="relative shrink-0">
+          {value ? (
+            <img
+              src={value}
+              alt="Profile preview"
+              className="w-20 h-20 rounded-full object-cover border-2 border-gray-100 dark:border-gray-700"
+            />
+          ) : (
+            <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+              <i className="bx bx-user text-3xl text-gray-400"></i>
             </div>
+          )}
         </div>
-    )
-}
 
-export default FormPhotoUpload
+        {/* Actions */}
+        <div className="flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            className="px-4 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+          >
+            {value ? "Change Photo" : "Upload Photo"}
+          </button>
+
+          {value && (
+            <button
+              type="button"
+              onClick={handleRemove}
+              className="px-4 py-2 rounded-full text-sm font-medium text-red-500 hover:text-red-700 transition-colors cursor-pointer text-left"
+            >
+              Remove Photo
+            </button>
+          )}
+
+          <p className="text-xs text-gray-400">
+            JPG, PNG, WEBP or GIF · Max 5 MB
+          </p>
+        </div>
+      </div>
+
+      {/* Hidden file input */}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif"
+        className="hidden"
+        onChange={handleFileChange}
+        aria-label="Upload profile photo"
+      />
+    </div>
+  );
+};
+
+export default FormPhotoUpload;

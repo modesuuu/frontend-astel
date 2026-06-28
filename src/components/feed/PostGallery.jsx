@@ -5,6 +5,7 @@ import Image from 'next/image'
 
 const PostGallery = ({ images = [] }) => {
   const totalImages = images.length
+  console.log("totalImages", totalImages)
   
   const [activeIndex, setActiveIndex] = useState(null)
 
