@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef } from "react";
+import { toast } from "sonner";
 
 /**
  * FormPhotoUpload
@@ -23,13 +24,13 @@ const FormPhotoUpload = ({ value, onChange }) => {
     // Basic client-side validation
     const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
     if (!allowedTypes.includes(file.type)) {
-      alert("Format tidak didukung. Gunakan JPG, PNG, WEBP, atau GIF.");
+      toast.error("Format file not supported.", { position: "top-right" });
       return;
     }
 
     const maxSizeMb = 5;
     if (file.size > maxSizeMb * 1024 * 1024) {
-      alert(`Ukuran file maksimal ${maxSizeMb} MB.`);
+      toast.error(`Max file size is ${maxSizeMb}MB.`, { position: "top-right" });
       return;
     }
 

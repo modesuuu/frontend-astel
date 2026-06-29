@@ -19,6 +19,7 @@ import { collaborationDetailMapping } from "@/mapping/collaboration.mapping.js";
 import { useAuthMe } from "@/hooks/useAuth.js";
 import timeAgo from "@/utils/timeAgo.js";
 import { useCreateApplication } from "@/hooks/useApplications.js";
+import { toast } from "sonner";
 
 const CollaborationsDetail = ({ params: paramsPromise }) => {
   // dummy data, nanti diganti pake fetch data dari API
@@ -39,9 +40,16 @@ const CollaborationsDetail = ({ params: paramsPromise }) => {
     try {
       await createApplication(collabId, { message });
       refreshCollab();
-      alert("Berhasil melamar!");
+      toast.success("Successfully applied collaboration", {
+        position: "top-right",
+      });
     } catch (err) {
-      alert(err.message);
+      toast.error(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to apply collaboration",
+        { position: "top-right" },
+      );
     }
   };
 
