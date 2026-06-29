@@ -56,8 +56,9 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         ></link>
       </head>
-      <body className="min-h-full flex flex-col">{children}
-        <Toaster postition="top right" richColors/>
+      <body className="min-h-full flex flex-col">
+        <Toaster postition="top-right" richColors />
+        {children}
       </body>
     </html>
   );

@@ -13,6 +13,7 @@ import CommentList from "@/components/comment/CommentList";
 import timeAgo from "@/utils/timeAgo";
 import usePostDetail from "@/hooks/usePostDetail.js";
 import { useAuthMe } from "@/hooks/useAuth.js";
+import { toast } from "sonner";
 
 const FeedDetailPage = ({ params: paramsPromise }) => {
   const params = use(paramsPromise);
@@ -82,6 +83,7 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
     try {
       await deleteComment(propsCommentId);
       await refreshPost();
+      toast.success("Komentar berhasil dihapus.", { position: "top-right" });
     } catch (error) {
       console.error(error);
       alert("Gagal menghapus komentar.");

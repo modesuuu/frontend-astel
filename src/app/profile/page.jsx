@@ -171,10 +171,11 @@ export default function ProfilePage() {
       setDeletingPostId(postId);
       await postService.deletePost(postId);
       await refreshMyPosts();
-      toast.success("Successfully deleted post");
+      toast.success("Successfully deleted post", { position: "top-right" });
     } catch (err) {
-      alert(
+      toast.error(
         err.response?.data?.message || err.message || "Failed to delete post",
+        { position: "top-right" },
       );
     } finally {
       setDeletingPostId(null);
@@ -187,20 +188,23 @@ export default function ProfilePage() {
     try {
       await collabService.deleteCollab(collabId);
       await refreshMyCollabs();
-      toast.success("Successfully deleted collaboration");
+      toast.success("Successfully deleted collaboration", {
+        position: "top-right",
+      });
     } catch (err) {
       toast.error(
         err.response?.data?.message ||
           err.message ||
           "Failed to delete collaboration",
+        { position: "top-right" },
       );
     } finally {
       setDeletingPostId(null);
     }
   };
 
-  const handleDetailPost = (postId) => {
-    router.push(`/posts/${postId}/edit`);
+  const handleEditPost = (postId) => {
+    router.push(`/post/${postId}`);
   };
 
   if (isLoading) {
@@ -293,7 +297,7 @@ export default function ProfilePage() {
                     <div className="absolute right-0 top-0 p-2">
                       <CardDropdownMenu
                         onDelete={() => handleDeletePost(feed._id)}
-                        onEdit={() => handleDetailPost(feed._id)}
+                        onEdit={() => handleEditPost(feed._id)}
                       />
                     </div>
                     <Profile
