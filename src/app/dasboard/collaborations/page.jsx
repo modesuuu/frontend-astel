@@ -63,6 +63,7 @@ const Collaborations = () => {
 
         <div className="grid grid-cols-2 gap-6 mt-6">
           {collaborationList.map((project) => (
+            
             <CollabCard key={project.id} project={project} />
           ))}
         </div>

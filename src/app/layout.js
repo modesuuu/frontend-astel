@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Metadata } from "next";
 import LocalFont from "next/font/local";
+import { Toaster } from "sonner";
 
 const customFont = LocalFont({
   src: [
@@ -55,7 +56,9 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         ></link>
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">{children}
+        <Toaster postition="top right" richColors/>
+      </body>
     </html>
   );
 }

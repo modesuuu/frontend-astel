@@ -12,7 +12,7 @@ const Header = () => {
     const isCollab = pathname.startsWith('/dasboard/collaborations');
 
     return (
-        <div className="sticky top-0 z-10 flex justify-between items-center pb-4 pt-2">
+        <div className="sticky top-0 z-10 flex w-full justify-between items-center pb-4 pt-2">
             <h1 className="text-2xl font-medium capitalize">
                 {isCollab ? "Collaborations" : "Feeds"}
             </h1>

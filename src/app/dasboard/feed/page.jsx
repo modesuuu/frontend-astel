@@ -22,21 +22,24 @@ import { useRouter } from "next/navigation.js";
 const Feeds = () => {
   // dumy data wok
   const { posts, isLoading, error, refreshPosts: refreshPost } = usePosts();
-  const router = useRouter( );
+  const router = useRouter();
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <section className="pt-6 relative">
-      <div className="mx-60">
+    <section className="pt-6 relative ">
+      <div className="mx-60 flex flex-col items-center ">
         <Header />
-        <div className="flex flex-col gap-6">
+
+        {/* ini yang mau aku static kan */}
+        <div className="flex flex-col px-36 gap-6">
           {/* mulai mapping dari sini */}
 
           {posts.data.map((post) => (
             <div key={post._id} className="flex flex-col gap-6 mt-6">
               <Profile
+                id={post?.userId._id}
                 avatar={post?.userId.photo_profile_url}
                 name={post?.userId.username}
                 time={timeAgo(post?.createdAt)}
@@ -45,7 +48,12 @@ const Feeds = () => {
               <div className="flex flex-col">
                 <PostContent content={post?.description} />
 
-                  <h1 className="text-sm font-medium text-primary cursor-pointer" onClick={() => router.push(ROUTES.POST_DETAIL(post?._id))}>View Details</h1>
+                <h1
+                  className="text-sm font-medium text-primary cursor-pointer"
+                  onClick={() => router.push(ROUTES.POST_DETAIL(post?._id))}
+                >
+                  View Details
+                </h1>
 
                 <PostGallery images={post?.mediaUrls} />
 

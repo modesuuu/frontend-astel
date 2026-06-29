@@ -71,7 +71,7 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
 
       likes: comment.likeCount ?? 0,
     })) || [];
-  console.log(comments);
+  console.log("comments", post?.data?.comments);
 
   const handleAddComment = async (text) => {
     await createComment({
@@ -133,7 +133,7 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
       {/* COMMENT */}
 
       <div className="mt-6">
-        <CommentInput onSendComment={handleAddComment} />
+        <CommentInput  onSendComment={handleAddComment} />
 
         {/* <CommentList comments={comments} /> */}
         <CommentList

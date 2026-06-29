@@ -32,3 +32,26 @@ export default function usePosts() {
     refreshPosts: fetchPosts,
   };
 }
+
+export function usePostDelete(id) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const deletePost = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      await postService.deletePost(id);
+    } catch (err) {
+      setError(err.response?.data?.message || "Gagal menghapus post");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    deletePost,
+    isLoading,
+    error,
+  };
+}

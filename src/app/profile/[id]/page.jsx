@@ -140,7 +140,7 @@ const ProfilePage = () => {
                     {/* <div className="flex items-center gap-6 text-xs text-gray-400 mt-1">
                         <span className="flex items-center gap-1"><i className="bx bx-show text-sm"></i> 124</span>
                         <span className="flex items-center gap-1 hover:text-pink-600 cursor-pointer transition-colors"><i className="bx bx-heart text-sm"></i> 42</span>
-                        <span className="flex items-center gap-1 hover:text-indigo-500 cursor-pointer transition-colors"><i className="bx bx-comment text-sm"></i> Comment</span>
+                        <span className="flex items-center gap-1 hover:text-indigo-500 cursor-pointer transition-colors"><i className="bx bx-message-circle text-sm"></i> Comment</span>
                       </div> */}
                   </div>
                 ))
