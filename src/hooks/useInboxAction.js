@@ -1,7 +1,7 @@
 import { useState } from "react";
 import applicationService from "@/services/application.service";
 
-export default function useInboxAction(removeInbox) {
+export default function useInboxAction(updateInboxStatus) {
   const [loading, setLoading] = useState(false);
 
   const accept = async (applicationId) => {
@@ -10,8 +10,7 @@ export default function useInboxAction(removeInbox) {
 
       await applicationService.acceptApplication(applicationId);
 
-      // refresh inbox setelah accept
-      removeInbox(applicationId);
+      updateInboxStatus(applicationId, "accepted");
     } finally {
       setLoading(false);
     }
@@ -23,8 +22,7 @@ export default function useInboxAction(removeInbox) {
 
       await applicationService.rejectApplication(applicationId);
 
-      // refresh inbox setelah reject
-      removeInbox(applicationId);
+      updateInboxStatus(applicationId, "rejected");
     } finally {
       setLoading(false);
     }

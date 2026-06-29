@@ -2,8 +2,12 @@
 "use client";
 import React from "react";
 import InboxList from "./InboxList";
+import InboxListSkeleton from "../ui/InboxListItemSkeleton.jsx";
 
-const InboxSidebar = ({ messages, selectedId, onSelectId }) => {
+const InboxSidebar = ({ messages, selectedId, onSelectId, loading }) => {
+  if(!messages) {
+    return <InboxListSkeleton />
+  }
   return (
     <section className="fixed right-0 top-0 z-30 flex h-screen w-[320px] flex-col bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800 px-6 py-6 shadow-sm">
       <div className="mb-6">
@@ -16,6 +20,7 @@ const InboxSidebar = ({ messages, selectedId, onSelectId }) => {
       <div className="flex-1 space-y-3 overflow-y-auto pr-1">
         {messages.map((item) => (
           <InboxList    
+            loading={false}
             key={item.id}
             item={item}
             isActive={item.id === selectedId}

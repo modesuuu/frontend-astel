@@ -79,7 +79,7 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
   console.log("dummyPost.id", dummyPost.id);
 
   const comments =
-    post?.data?.comments?.map((comment) => ({
+    feedPost?.comments?.map((comment) => ({
       id: comment._id,
       userId: comment.userId._id,
       username: comment.userId.username,
@@ -94,18 +94,36 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
     })) || [];
 
   const handleAddComment = async (text) => {
-    await createComment({
-      content: text,
-    });
+    try {
+      const { data: newComment } = await createComment({
+        content: text,
+      });
+      setFeedPosts((prev) => ({
+        ...prev,
+        commentCount: prev.commentCount + 1,
+        comments: [newComment, ...prev.comments],
+      }));
+      toast.success("Successfully comments on this Feed", {
+        position: "top-right",
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed comment!", { position: "top-right" });
+    }
   };
+
   const handleDeleteComment = async (propsCommentId) => {
     try {
       await deleteComment(propsCommentId);
-      await refreshPost();
-      toast.success("Komentar berhasil dihapus.", { position: "top-right" });
+      setFeedPosts((prev) => ({
+        ...prev,
+        commentCount: prev.commentCount - 1,
+        comments: prev?.comments.filter((item) => item._id !== propsCommentId),
+      }));
+      toast.success("Successfully deleted comment", { position: "top-right" });
     } catch (error) {
       console.error(error);
-      alert("Gagal menghapus komentar.");
+      toast.error("Failed to delete comment", { position: "top-right" });
     }
   };
 
@@ -167,7 +185,10 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
       {/* COMMENT */}
 
       <div className="mt-6">
-        <CommentInput onSendComment={handleAddComment} />
+        <CommentInput
+          avatar={profile?.data?.photo_profile_url}
+          onSendComment={handleAddComment}
+        />
 
         {/* <CommentList comments={comments} /> */}
         <CommentList

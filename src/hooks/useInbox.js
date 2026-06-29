@@ -2,12 +2,25 @@ import { useCallback, useEffect, useState } from "react";
 import applicationService from "@/services/application.service";
 
 export default function useInbox() {
-  const removeInbox = (id) => {
-    setInbox((prev) => prev.filter((item) => item._id !== id));
-  };
   const [inbox, setInbox] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const removeInbox = (id) => {
+    setInbox((prev) => prev.filter((item) => item._id !== id));
+  };
+  const updateInboxStatus = (id, status) => {
+    setInbox((prev) =>
+      prev.map((item) =>
+        item._id === id
+          ? {
+              ...item,
+              status,
+            }
+          : item,
+      ),
+    );
+  };
 
   const getInbox = useCallback(async () => {
     try {
@@ -34,5 +47,6 @@ export default function useInbox() {
     error,
     refreshInbox: getInbox,
     removeInbox,
+    updateInboxStatus,  
   };
 }

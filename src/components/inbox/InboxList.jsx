@@ -2,8 +2,13 @@
 "use client";
 import React from 'react';
 import Profile from '@/components/profile/Profile';
+import InboxListSkeleton from '../ui/InboxListItemSkeleton.jsx';
 
-const InboxList = ({ item, isActive, onClick }) => {
+const InboxList = ({ item, isActive, onClick, loading }) => {
+    if (loading) {
+       return <InboxListSkeleton />
+    }
+    // console.log(loading)
     return (
         <div
             onClick={onClick}

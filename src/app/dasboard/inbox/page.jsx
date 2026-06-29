@@ -1,7 +1,7 @@
 "use block";
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "@/components/layout/Sidebar";
 import InboxList from "@/components/inbox/InboxList";
 import InboxDetail from "@/components/inbox/InboxDetail";
@@ -11,8 +11,8 @@ import useInbox from "@/hooks/useInbox.js";
 import useInboxAction from "@/hooks/useInboxAction.js";
 
 const Inbox = () => {
-  const { inbox, removeInbox } = useInbox();
-  const { accept, reject, loading } = useInboxAction(removeInbox);
+  const { inbox, updateInboxStatus, loading: inboxLoading } = useInbox();
+  const { accept, reject, loading: inboxActionLoading } = useInboxAction(updateInboxStatus);
   // const [messages] = useState([
   //   {
   //     id: "msg-1",
@@ -43,10 +43,27 @@ const Inbox = () => {
   // State untuk melacak pesan mana yang sedang aktif dibaca user
 
   const messages = mapInboxList(inbox || []);
-
-  console.log("inbox", inbox);
+  console.log("loading", inboxLoading || inboxActionLoading);
   console.log("message", messages);
-  const [selectedId, setSelectedId] = useState("msg-1");
+  const [selectedId, setSelectedId] = useState(null);
+
+  useEffect(() => {
+    if (messages.length > 0 && !selectedId) {
+      setSelectedId(messages[0].id);
+    }
+  }, [messages, selectedId]);
+  const handleAccept = async (id) => {
+    await accept(id);
+    const next = messages.find((m) => m.id !== id);
+    setSelectedId(next ? next.id : null);
+  };
+
+  const handleReject = async (id) => {
+    await reject(id);
+    const next = messages.find((m) => m.id !== id);
+    setSelectedId(next ? next.id : null);
+  };
+
   const activeMessage = messages.find((m) => m.id === selectedId);
 
   console.log("activeMessage", activeMessage);
@@ -60,13 +77,14 @@ const Inbox = () => {
         {/* SISI KIRI/TENGAH: Tempat Detail Isi Surat */}
         <InboxDetail
           activeMessage={activeMessage}
-          onAccept={accept}
-          onReject={reject}
-          loading={loading}
+          onAccept={handleAccept}
+          onReject={handleReject}
+          loading={inboxLoading || inboxActionLoading}
         />
 
         {/* SISI KANAN: Sidebar List Inbox Panel */}
         <InboxSidebar
+          loading={inboxLoading || inboxActionLoading}
           messages={messages}
           selectedId={selectedId}
           onSelectId={setSelectedId}

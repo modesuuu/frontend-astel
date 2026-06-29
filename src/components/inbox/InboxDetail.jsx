@@ -3,14 +3,13 @@
 
 import React from "react";
 import Profile from "@/components/profile/Profile";
+import InboxDetailSkeleton from "../ui/InboxDetailSkeleton.jsx";
+
 
 const InboxDetail = ({ activeMessage, loading, onAccept, onReject }) => {
   if (!activeMessage) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center text-gray-400 dark:text-gray-600 h-[60vh]">
-        <i className="bx bx-envelope text-5xl mb-2 animate-pulse"></i>
-        <p className="text-sm">Pilih pesan di samping untuk membaca detail</p>
-      </div>
+     <InboxDetailSkeleton />
     );
   }
   return (
@@ -37,23 +36,52 @@ const InboxDetail = ({ activeMessage, loading, onAccept, onReject }) => {
 
         {/* Action Call to Buttons (Accept & Reject) */}
         <div className="flex items-center gap-3 pt-2">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => onAccept(activeMessage.id)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-indigo-700 active:scale-95 text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
-          >
-            <i className="bx bx-check text-sm"></i> Accept
-          </button>
+          {activeMessage.status === "pending" ? (
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                disabled={loading}
+                onClick={() => onAccept(activeMessage.id)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-indigo-700 active:scale-95 text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+              >
+                <i className="bx bx-check text-sm"></i>
+                Accept
+              </button>
 
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => onReject(activeMessage.id)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-500 hover:bg-red-600 active:scale-95 text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
-          >
-            <i className="bx bx-x text-sm"></i> Reject
-          </button>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={() => onReject(activeMessage.id)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-500 hover:bg-red-600 active:scale-95 text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+              >
+                <i className="bx bx-x text-sm"></i>
+                Reject
+              </button>
+            </div>
+          ) : (
+            <div className="pt-2">
+              <div
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold
+        ${
+          activeMessage.status === "accepted"
+            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+            : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+        }`}
+              >
+                <i
+                  className={`bx ${
+                    activeMessage.status === "accepted"
+                      ? "bx-check-circle"
+                      : "bx-x-circle"
+                  }`}
+                ></i>
+
+                {activeMessage.status === "accepted"
+                  ? "Application Accepted"
+                  : "Application Rejected"}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
