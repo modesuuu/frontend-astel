@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, use } from "react";
+import React, { useState, use, useEffect } from "react";
 import Link from "next/link";
 
 import Profile from "@/components/profile/Profile";
@@ -14,6 +14,7 @@ import timeAgo from "@/utils/timeAgo";
 import usePostDetail from "@/hooks/usePostDetail.js";
 import { useAuthMe } from "@/hooks/useAuth.js";
 import { toast } from "sonner";
+import PillLink from "@/components/ui/Pillink.jsx";
 
 const FeedDetailPage = ({ params: paramsPromise }) => {
   const params = use(paramsPromise);
@@ -25,38 +26,57 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
   console.log("profile: auth me", profile);
   console.log("post: ", post);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
   // =========================
+  const [feedPost, setFeedPosts] = useState({});
   // Adapter Response Backend
   // =========================
 
+  useEffect(() => {
+    if (post?.data) {
+      setFeedPosts(post?.data);
+    }
+  }, [post]);
+
   const dummyPost = {
-    id: post?.data?._id,
+    id: feedPost?._id,
 
-    username: post?.data?.ownerId?.username,
+    username: feedPost?.ownerId?.username,
 
-    avatarUrl: post?.data?.ownerId?.photo_profile_url,
+    avatarUrl: feedPost?.ownerId?.photo_profile_url,
 
-    time: timeAgo(post?.data?.createdAt),
+    time: timeAgo(feedPost?.createdAt),
 
-    title: post?.data?.title,
+    title: feedPost?.title,
 
-    content: post?.data?.description,
+    content: feedPost?.description,
 
-    media: post?.data?.mediaUrls || [],
+    media: feedPost?.mediaUrls || [],
 
-    views: post?.data?.viewCount,
+    views: feedPost?.viewCount,
 
-    likes: post?.data?.likeCount,
+    likes: feedPost?.likeCount,
 
-    comments: post?.data?.commentCount,
+    comments: feedPost?.commentCount,
 
-    isLiked: post?.data?.isLiked,
-    userId: post?.data?.ownerId._id,
-
+    isLiked: feedPost?.isLiked,
+    userId: feedPost?.ownerId?._id,
+    externalUrl: feedPost?.externalUrl,
   };
+  const handleLikeSuccess = (postId) => {
+    setFeedPosts((post) => {
+      if (post._id !== postId) {
+        return post;
+      }
+      return {
+        ...post,
+        likeCount: post.isLiked ? post.likeCount - 1 : post.likeCount + 1,
+        isLiked: !post.isLiked,
+      };
+    });
+  };
+  console.log("dummyPost: ", dummyPost);
+  console.log("feedPost", feedPost);
+  console.log("dummyPost.id", dummyPost.id);
 
   const comments =
     post?.data?.comments?.map((comment) => ({
@@ -72,7 +92,6 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
 
       likes: comment.likeCount ?? 0,
     })) || [];
-  console.log("comments", post?.data?.comments);
 
   const handleAddComment = async (text) => {
     await createComment({
@@ -90,6 +109,8 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
     }
   };
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
   return (
     <div className="pt-6 relative mx-60">
       {/* TOP BAR */}
@@ -108,7 +129,7 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
 
       {/* POST */}
 
-      <div className="flex flex-col gap-6 mt-6">
+      <div className="relative flex flex-col gap-6 mt-6">
         <Profile
           id={dummyPost.userId}
           avatar={dummyPost.avatarUrl}
@@ -121,21 +142,32 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
         <PostGallery images={dummyPost.media} />
 
         <InteractionStats
-          initialStats={{
+          stats={{
             views: dummyPost.views,
             likes: dummyPost.likes,
             isLiked: dummyPost.isLiked,
             comments: dummyPost.comments,
           }}
           feedId={dummyPost.id}
-          refreshPosts={refreshPost}
+          onLikeSuccess={handleLikeSuccess}
         />
+        <div className="absolute top-0 right-0 ">
+          <PillLink
+            icon="bx bx-globe-alt"
+            className="text-lg"
+            external
+            href={dummyPost.externalUrl}
+          >
+            Visit
+          </PillLink>
+        </div>
+        {/* <p>makan</p> */}
       </div>
 
       {/* COMMENT */}
 
       <div className="mt-6">
-        <CommentInput  onSendComment={handleAddComment} />
+        <CommentInput onSendComment={handleAddComment} />
 
         {/* <CommentList comments={comments} /> */}
         <CommentList

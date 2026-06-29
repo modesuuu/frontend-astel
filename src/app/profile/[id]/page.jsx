@@ -23,6 +23,7 @@ import useMyPosts from "@/hooks/useMyPosts.js";
 import { ROUTES } from "@/constants/routes.js";
 import timeAgo from "@/utils/timeAgo.js";
 import { collaborationMapping } from "@/mapping/collaboration.mapping.js";
+import PillLink from "@/components/ui/Pillink.jsx";
 const ProfilePage = () => {
   const profileId = useParams().id;
   console.log("params", profileId);
@@ -94,6 +95,9 @@ const ProfilePage = () => {
 
           <div className=" flex flex-col items-end pt-4 px-6">
             <SocialMediaLinks links={userProfile?.socialMedia} />
+            {/* <PillLink href={userProfile?.socialMedia} platform= >
+              {userProfile?.socialMedia}
+            </PillLink> */}
             <SkillBadges skills={userProfile?.skills} />
           </div>
         </div>

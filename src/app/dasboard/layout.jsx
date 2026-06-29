@@ -8,7 +8,7 @@ const layout = ({ children }) => {
     <div className="bg-[#F7F6FE] ">
         <main>
             <Sidebar />
-            <RightProfileSidebar/>
+            <RightProfileSidebar classNameSection="hidden md:block"/>
             <div className="pr-26">
               {children}
             </div>

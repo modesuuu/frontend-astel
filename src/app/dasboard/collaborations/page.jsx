@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import CollabCard from "@/components/collaborations/CollabCard";
 import useCollabs from "@/hooks/useCollabs";
 import timeAgo from "@/utils/timeAgo"; // sesuaikan path
+import FeedSkeleton from "@/components/feed/FeedSkeleton.jsx";
 
 const Collaborations = () => {
   const { collabs, isLoading, error } = useCollabs();
@@ -12,14 +13,9 @@ const Collaborations = () => {
 
   if (isLoading) {
     return (
-      <section className="pt-6 relative min-h-screen">
-        <div className="mx-60">
-          <Header />
-          <div className="mt-6 text-center">
-            <p>Loading...</p>
-          </div>
-        </div>
-      </section>
+      <div className="mx-60 grid grid-cols-2 gap-8">
+        <FeedSkeleton count={6} />
+      </div>
     );
   }
 
@@ -55,7 +51,7 @@ const Collaborations = () => {
       time: item.createdAt,
     })) || [];
 
-  console.log("collaborationList",collaborationList);
+  console.log("collaborationList", collaborationList);
   return (
     <section className="pt-6 relative">
       <div className="mx-60">
@@ -63,7 +59,6 @@ const Collaborations = () => {
 
         <div className="grid grid-cols-2 gap-6 mt-6">
           {collaborationList.map((project) => (
-            
             <CollabCard key={project.id} project={project} />
           ))}
         </div>

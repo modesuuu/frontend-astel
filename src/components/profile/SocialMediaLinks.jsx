@@ -1,4 +1,5 @@
 import React from 'react'
+import PillLink from '../ui/Pillink.jsx';
 
 const SocialMediaLinks = ({ links }) => {
 
@@ -17,16 +18,19 @@ const SocialMediaLinks = ({ links }) => {
             </span>
             <div className="flex items-center gap-2 flex-wrap justify-end">
                 {activeLinks.map((link, index) => (
-                    <a
-                        key={index}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D3CFFF] text-xs font-medium hover:bg-indigo-100 dark:hover:bg-indigo-950/80 transition-colors"
-                    >
-                        <i className={`${link.icon} text-xl`}></i>
-                        <span>{link.platform}</span>
-                    </a>
+                    // <a
+                    //     key={index}
+                    //     href={link.url}
+                    //     target="_blank"
+                    //     rel="noopener noreferrer"
+                    //     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D3CFFF] text-xs font-medium hover:bg-indigo-100 dark:hover:bg-indigo-950/80 transition-colors"
+                    // >
+                    //     <i className={`${link.icon} text-xl`}></i>
+                    //     <span>{link.platform}</span>
+                    // </a>
+                    <PillLink key={index} href={link.url} platform={link.platform} external >
+                        {link.platform}
+                    </PillLink>
                 ))}
             </div>
         </div>

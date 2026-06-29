@@ -1,7 +1,7 @@
 "use client";
 import PostGallery from "@/components/feed/PostGallery";
 import Sidebar from "@/components/layout/Sidebar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
 import Profile from "@/components/profile/Profile";
 import PostContent from "@/components/feed/PostContent";
@@ -18,14 +18,43 @@ import usePosts from "@/hooks/usePosts.js";
 import timeAgo from "@/utils/timeAgo.js";
 import { ROUTES } from "@/constants/routes.js";
 import { useRouter } from "next/navigation.js";
+import FeedSkeleton, {
+  FeedCardSkeleton,
+} from "@/components/feed/FeedSkeleton.jsx";
 
 const Feeds = () => {
   // dumy data wok
   const { posts, isLoading, error, refreshPosts: refreshPost } = usePosts();
+  const [feedPosts, setFeedPosts] = useState([]);
+  useEffect(() => {
+    if (posts.data) {
+      setFeedPosts(posts.data);
+    }
+  }, [posts]);
   const router = useRouter();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  const handleLikeSuccess = (postId) => {
+    setFeedPosts((prev) =>
+      prev.map((post) => {
+        if (post._id !== postId) {
+          return post;
+        }
+        return {
+          ...post,
+          likeCount: post.isLiked ? post.likeCount - 1 : post.likeCount + 1,
+          isLiked: !post.isLiked,
+        };
+      }),
+    );
+  };
+
+  if (isLoading)
+    return (
+      <div className="mx-60 px-36">
+        <FeedSkeleton count={2} />
+      </div>
+    );
+  if (error) return <p className="text-red-500 text-center">{error}</p>;
 
   return (
     <section className="pt-6 relative ">
@@ -36,7 +65,7 @@ const Feeds = () => {
         <div className="flex flex-col px-36 gap-6">
           {/* mulai mapping dari sini */}
 
-          {posts.data.map((post) => (
+          {feedPosts.map((post) => (
             <div key={post._id} className="flex flex-col gap-6 mt-6">
               <Profile
                 id={post?.userId._id}
@@ -58,14 +87,14 @@ const Feeds = () => {
                 <PostGallery images={post?.mediaUrls} />
 
                 <InteractionStats
-                  initialStats={{
+                  stats={{
                     views: post?.viewCount,
                     likes: post?.likeCount,
                     isLiked: post?.isLiked,
                     comments: post?.commentCount,
                   }}
                   feedId={post?._id}
-                  refreshPosts={refreshPost}
+                  onLikeSuccess={handleLikeSuccess}
                 />
               </div>
             </div>

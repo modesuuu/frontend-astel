@@ -342,7 +342,7 @@ export default function ProfilePage() {
               {Array.isArray(collaborationList) &&
               collaborationList.length > 0 ? (
                 collaborationList.map((project) => (
-                  <div className="relative">
+                  <div className="relative" key={project.id}>
                     <div className="absolute right-0 bottom-0 p-6">
                       <CardDropdownMenu
                         onDelete={() => handleDeleteCollab(project.id)}

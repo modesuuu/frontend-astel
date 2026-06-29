@@ -10,7 +10,7 @@ import { useAuthMe } from "@/hooks/useAuth.js";
 
 export function LoadingProfileSkeleton() {
   return (
-    <section className="fixed right-0 top-0 z-30 flex h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors">
+    <section className={`hidden md:flex fixed right-0 top-0 z-30 h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}>
       <div className="w-full h-full flex flex-col justify-between animate-pulse">
 
         {/* === TOP: ProfileSummaryCard Skeleton === */}
@@ -91,7 +91,7 @@ export function LoadingProfileSkeleton() {
   );
 }
 
-const RightProfileSidebar = () => {
+const RightProfileSidebar = ({ classNameSection  }) => {
   const { profile, isLoading, error } = useAuthMe();
 console.log("profile: ", profile);
   const pathname = usePathname();
@@ -118,7 +118,7 @@ useEffect(() => {
 
 if(isLoading) return <LoadingProfileSkeleton />;
   return (
-    <section className="fixed right-0 top-0 z-30 flex h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors">
+    <section className={`${classNameSection} fixed right-0 top-0 z-30 flex h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}>
       <div
         ref={containerRef}
         className="w-full h-full flex flex-col justify-between"
