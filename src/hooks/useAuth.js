@@ -31,6 +31,7 @@ export function useRegister() {
       return data;
     } catch (err) {
       setError(err.response?.data?.message || "Gagal register");
+      throw err;
     } finally {
       setIsLoading(false);
     }
