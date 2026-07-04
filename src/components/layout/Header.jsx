@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <div className="sticky top-0 z-10 flex w-full justify-between items-center pb-4 pt-2">
-            <h1 className="text-2xl font-medium capitalize">
+            <h1 className="text-2xl font-medium capitalize dark:text-gray-400">
                 {isCollab ? "Collaborations" : "Feeds"}
             </h1>
 

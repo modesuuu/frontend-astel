@@ -10,40 +10,44 @@ import { useAuthMe } from "@/hooks/useAuth.js";
 
 export function LoadingProfileSkeleton() {
   return (
-    <section className={`hidden md:flex fixed right-0 top-0 z-30 h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}>
+    <section
+      className={`hidden md:flex fixed right-0 top-0 z-30 h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}
+    >
       <div className="w-full h-full flex flex-col justify-between animate-pulse">
-
         {/* === TOP: ProfileSummaryCard Skeleton === */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 ">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-xl font-medium text-gray-950 dark:text-white">Profile</h2>
+          </div>
 
           {/* Avatar + nama + username */}
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 shrink-0" />
-            <div className="flex flex-col gap-2 flex-1">
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 shrink-0" />
+            {/* <div className="flex flex-col gap-2 flex-1">
               <div className="h-3.5 w-32 rounded-full bg-gray-200 dark:bg-gray-700" />
               <div className="h-3 w-20 rounded-full bg-gray-200 dark:bg-gray-700" />
-            </div>
+            </div> */}
           </div>
 
           {/* Bio / deskripsi singkat */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 items-center">
             <div className="h-3 w-full rounded-full bg-gray-200 dark:bg-gray-700" />
             <div className="h-3 w-5/6 rounded-full bg-gray-200 dark:bg-gray-700" />
             <div className="h-3 w-4/6 rounded-full bg-gray-200 dark:bg-gray-700" />
           </div>
 
           {/* Stats row: followers / following / posts */}
-          <div className="flex items-center gap-4 pt-1">
+          {/* <div className="flex items-center gap-4 pt-1">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="flex flex-col gap-1.5 items-center flex-1">
                 <div className="h-4 w-10 rounded-full bg-gray-200 dark:bg-gray-700" />
                 <div className="h-3 w-14 rounded-full bg-gray-200 dark:bg-gray-700" />
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Tags / skill badges */}
-          <div className="flex flex-wrap gap-2">
+          {/* <div className="flex flex-wrap gap-2">
             {[60, 80, 50, 70].map((w, i) => (
               <div
                 key={i}
@@ -51,13 +55,13 @@ export function LoadingProfileSkeleton() {
                 style={{ width: `${w}px` }}
               />
             ))}
-          </div>
+          </div> */}
 
           {/* Divider */}
-          <div className="w-full h-px bg-gray-100 dark:bg-gray-800" />
+          {/* <div className="w-full h-px bg-gray-100 dark:bg-gray-800" /> */}
 
           {/* List item rows (misal: recent activity / konten) */}
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-gray-200 dark:bg-gray-700 shrink-0" />
@@ -67,12 +71,11 @@ export function LoadingProfileSkeleton() {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* === BOTTOM: Widget Input Skeleton === */}
         <div className="w-full bg-gray-100 dark:bg-gray-800/60 border border-gray-200/20 rounded-3xl p-4 shadow-inner">
-
           {/* Tombol utama */}
           <div className="w-full h-10 rounded-2xl bg-gray-300 dark:bg-gray-700" />
 
@@ -85,15 +88,14 @@ export function LoadingProfileSkeleton() {
             <div className="h-6 w-14 rounded-full bg-gray-300 dark:bg-gray-700" />
           </div>
         </div>
-
       </div>
     </section>
   );
 }
 
-const RightProfileSidebar = ({ classNameSection  }) => {
+const RightProfileSidebar = ({ classNameSection }) => {
   const { profile, isLoading, error } = useAuthMe();
-console.log("profile: ", profile);
+  console.log("profile: ", profile);
   const pathname = usePathname();
   const [isEditing, setIsEditing] = useState(false);
   const containerRef = useRef(null);
@@ -101,24 +103,26 @@ console.log("profile: ", profile);
   // 1. CEK APAKAH SEDANG DI HALAMAN PROFILE
   // 2. CEK APAKAH SEDANG DI HALAMAN COLLABORATIONS
   const isCollabPage = pathname === "/dasboard/collaborations";
-  
+
   const currentUser = {
     name: profile?.data?.username,
     avatar: profile?.data?.photo_profile_url,
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     if (!containerRef.current) return;
     gsap.fromTo(
-        containerRef.current.children,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", stagger: 0.05 },
+      containerRef.current.children,
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", stagger: 0.05 },
     );
-}, [isEditing, pathname]);
+  }, [isEditing, pathname]);
 
-if(isLoading) return <LoadingProfileSkeleton />;
+  if (isLoading) return <LoadingProfileSkeleton />;
   return (
-    <section className={`${classNameSection} fixed right-0 top-0 z-30 flex h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}>
+    <section
+      className={`${classNameSection} fixed right-0 top-0 z-30 flex h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}
+    >
       <div
         ref={containerRef}
         className="w-full h-full flex flex-col justify-between"

@@ -9,16 +9,26 @@ import React, { useState } from "react";
 import { ROUTES } from "@/constants/routes.js";
 import { useLogin } from "@/hooks/useAuth.js";
 import { useRouter } from "next/navigation.js";
+import { toast } from "sonner";
 
 const Login = () => {
   const [data, setData] = useState({});
   const { login, isLoading, error } = useLogin();
   const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(data);
-    router.push(ROUTES.HOME);
-    
+    try {
+      const result = await login(data);
+      router.push(ROUTES.HOME);
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || "Username atau password salah",
+        {
+          position: "top-right",
+        },
+      );
+    }
   };
 
   const handleChange = (e) => {
@@ -29,7 +39,7 @@ const Login = () => {
   };
   return (
     <section>
-      <div className="flex items-center w-full h-screen justify-between px-16">
+      <div className="flex items-center w-full h-screen justify-between px-16 dark:bg-slate-900">
         <Image src={illus} alt="Auth ilustration" className="ml-36" />
         <div className="flex flex-col gap-6 justify-center h-full w-full max-w-141.5 items-center">
           <Image src={logoApp} alt="Astel logo" />
@@ -37,7 +47,7 @@ const Login = () => {
             Welcome Back
           </h1>
           <form className="w-full px-35" onSubmit={handleSubmit} action="">
-            {error && <p className="text-red-500">{error}</p>}
+            {/* {error && <p className="text-red-500">{error}</p>} */}
             <div className="flex flex-col gap-3 w-full">
               <Input
                 type="text"
@@ -60,12 +70,12 @@ const Login = () => {
               }
               disabled={isLoading}
             >
-              {isLoading ? "Tunggu bentar nyed...!" : "Login"}
+              {isLoading ? "Loading!" : "Login"}
             </Button>
           </form>
-          <p className=" text-sm mt-3">
+          <p className=" text-sm mt-3 dark:text-slate-400">
             Don't have an account?{" "}
-            <a href={ROUTES.REGISTER} className="text-primary">
+            <a href={ROUTES.REGISTER} className="text-primary ">
               Register
             </a>
           </p>

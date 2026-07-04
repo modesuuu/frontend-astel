@@ -32,7 +32,7 @@ const Register = () => {
 
   return (
     <section>
-      <div className="flex items-center w-full h-screen justify-between px-16">
+      <div className="flex items-center w-full h-screen justify-between px-16 dark:bg-slate-900">
         <Image src={illus} alt="Auth ilustration" className="ml-36" />
         <div className="flex flex-col gap-6 justify-center h-full w-full max-w-141.5 items-center">
           <Image src={logoApp} alt="Astel logo" />
@@ -71,7 +71,7 @@ const Register = () => {
               {isLoading ? "Loading..." : "Register"}
             </Button>
           </form>
-          <p className=" text-sm mt-3">
+          <p className=" text-sm mt-3 dark:text-slate-400">
             Already have an account?{" "}
             <a href={ROUTES.LOGIN} className="text-primary">
               Login

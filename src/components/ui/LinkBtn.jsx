@@ -13,11 +13,11 @@ const LinkBtn = ({ href, iconClass, label }) => {
       href={href}
       aria-current={isActive ? "page" : undefined}
       className={`flex items-center gap-1.5 rounded-md px-2 py-2 transition-colors select-none ${
-        isActive ? "text-primary" : "text-black hover:text-primary"
+        isActive ? "text-primary" : "text-black dark:text-gray-400  hover:text-primary"
       }`}
     >
       <i className={`text-2xl ${iconClass}`}></i>
-      <span className="text-base font-medium">{label}</span>
+      <span className="text-base font-medium ">{label}</span>
     </Link>
   )
 }

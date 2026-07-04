@@ -15,6 +15,9 @@ import usePostDetail from "@/hooks/usePostDetail.js";
 import { useAuthMe } from "@/hooks/useAuth.js";
 import { toast } from "sonner";
 import PillLink from "@/components/ui/Pillink.jsx";
+import FeedSkeleton, {
+  FeedCardSkeleton,
+} from "@/components/feed/FeedSkeleton.jsx";
 
 const FeedDetailPage = ({ params: paramsPromise }) => {
   const params = use(paramsPromise);
@@ -126,9 +129,13 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
       toast.error("Failed to delete comment", { position: "top-right" });
     }
   };
-
-  if (isLoading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
+
+  if (!dummyPost) {
+    <div className="pt-6 relative mx-60">
+      <FeedCardSkeleton count={1} />
+    </div>;
+  }
   return (
     <div className="pt-6 relative mx-60">
       {/* TOP BAR */}
@@ -147,56 +154,62 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
 
       {/* POST */}
 
-      <div className="relative flex flex-col gap-6 mt-6">
-        <Profile
-          id={dummyPost.userId}
-          avatar={dummyPost.avatarUrl}
-          name={dummyPost.username}
-          time={dummyPost.time}
-        />
+      {!isLoading ? (
+        <>
+          <div className="relative flex flex-col gap-6 mt-6">
+            <Profile
+              id={dummyPost.userId}
+              avatar={dummyPost.avatarUrl}
+              name={dummyPost.username}
+              time={dummyPost.time}
+            />
 
-        <PostContent content={[dummyPost.content]} />
+            <PostContent content={[dummyPost.content]} />
 
-        <PostGallery images={dummyPost.media} />
+            <PostGallery images={dummyPost.media} />
 
-        <InteractionStats
-          stats={{
-            views: dummyPost.views,
-            likes: dummyPost.likes,
-            isLiked: dummyPost.isLiked,
-            comments: dummyPost.comments,
-          }}
-          feedId={dummyPost.id}
-          onLikeSuccess={handleLikeSuccess}
-        />
-        <div className="absolute top-0 right-0 ">
-          <PillLink
-            icon="bx bx-globe-alt"
-            className="text-lg"
-            external
-            href={dummyPost.externalUrl}
-          >
-            Visit
-          </PillLink>
-        </div>
-        {/* <p>makan</p> */}
-      </div>
+            <InteractionStats
+              stats={{
+                views: dummyPost.views,
+                likes: dummyPost.likes,
+                isLiked: dummyPost.isLiked,
+                comments: dummyPost.comments,
+              }}
+              feedId={dummyPost.id}
+              onLikeSuccess={handleLikeSuccess}
+            />
+            <div className="absolute top-0 right-0 ">
+              <PillLink
+                icon="bx bx-globe-alt"
+                className="text-lg"
+                external
+                href={dummyPost.externalUrl}
+              >
+                Visit
+              </PillLink>
+            </div>
+            {/* <p>makan</p> */}
+          </div>
 
-      {/* COMMENT */}
+          {/* COMMENT */}
 
-      <div className="mt-6">
-        <CommentInput
-          avatar={profile?.data?.photo_profile_url}
-          onSendComment={handleAddComment}
-        />
+          <div className="mt-6">
+            <CommentInput
+              avatar={profile?.data?.photo_profile_url}
+              onSendComment={handleAddComment}
+            />
 
-        {/* <CommentList comments={comments} /> */}
-        <CommentList
-          comments={comments}
-          currentUserId={profile?.data?.userId}
-          onDeleteComment={handleDeleteComment}
-        />
-      </div>
+            {/* <CommentList comments={comments} /> */}
+            <CommentList
+              comments={comments}
+              currentUserId={profile?.data?.userId}
+              onDeleteComment={handleDeleteComment}
+            />
+          </div>
+        </>
+      ) : (
+        <FeedCardSkeleton count={1} />
+      )}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import Setting from '../setting/Setting'
 
 const Sidebar = () => {
   return (
-    <section className="fixed left-0 top-0 z-40 flex h-screen  flex-col justify-between bg-white px-6 py-6 shadow-sm">
+    <section className="fixed left-0 top-0 z-40 flex h-screen  flex-col justify-between bg-white px-6 py-6 shadow-sm dark:bg-gray-900">
       <div className="flex w-full flex-col items-center justify-center gap-10">
         <Image src={logoApp} alt="Astel logo" />
         <div className="flex w-full flex-col gap-2">

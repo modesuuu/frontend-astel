@@ -1,21 +1,17 @@
-import Sidebar from '@/components/layout/Sidebar'
-import RightProfileSidebar from '@/components/rightbar/RightProfileSidebar'
-import React from 'react'
+import Sidebar from "@/components/layout/Sidebar";
+import RightProfileSidebar from "@/components/rightbar/RightProfileSidebar";
+import React from "react";
 
 const layout = ({ children }) => {
-  
   return (
-    <div className="bg-[#F7F6FE] ">
-        <main>
-            <Sidebar />
-            <RightProfileSidebar classNameSection="hidden md:block"/>
-            <div className="pr-26">
-              {children}
-            </div>
-        </main>
+    <div className="bg-[#F7F6FE] dark:bg-gray-950 min-h-screen">
+      <main>
+        <Sidebar />
+        <RightProfileSidebar classNameSection="hidden md:block " />
+        <div className="pr-26">{children}</div>
+      </main>
     </div>
- 
-  )
-}
+  );
+};
 
-export default layout
+export default layout;

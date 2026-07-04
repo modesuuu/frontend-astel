@@ -5,12 +5,9 @@ import React from "react";
 import Profile from "@/components/profile/Profile";
 import InboxDetailSkeleton from "../ui/InboxDetailSkeleton.jsx";
 
-
 const InboxDetail = ({ activeMessage, loading, onAccept, onReject }) => {
   if (!activeMessage) {
-    return (
-     <InboxDetailSkeleton />
-    );
+    return <InboxDetailSkeleton />;
   }
   return (
     <div className="flex-1 bg-transparent ml-60 mt-6">
@@ -26,13 +23,23 @@ const InboxDetail = ({ activeMessage, loading, onAccept, onReject }) => {
 
       {/* Message Content Body */}
       <div className="pl-13 space-y-6">
-        <h2 className="text-xl font-bold text-gray-950 dark:text-white">
-          {activeMessage.subject}
-        </h2>
-
-        <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl font-light">
-          {activeMessage.message}
-        </p>
+        {/* Subject */}
+        <div className="flex flex-col gap-2 max-w-2xl">
+          <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl font-light">
+            Collaboration Request for:
+          </p>
+          <h2 className="text-xl font-bold text-gray-950 dark:text-white">
+            {activeMessage.subject}
+          </h2>
+        </div>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl font-light">
+            Message:
+          </p>
+          <p className=" text-gray-700 tracking-wide dark:text-gray-400 leading-relaxed max-w-2xl">
+            {activeMessage.message}
+          </p>
+        </div>
 
         {/* Action Call to Buttons (Accept & Reject) */}
         <div className="flex items-center gap-3 pt-2">

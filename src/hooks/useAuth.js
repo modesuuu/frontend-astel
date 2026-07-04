@@ -65,6 +65,7 @@ export function useLogin() {
       return data;
     } catch (err) {
       setError(err.response?.data?.message || "Username atau password salah");
+      throw err;
     } finally {
       setIsLoading(false);
     }

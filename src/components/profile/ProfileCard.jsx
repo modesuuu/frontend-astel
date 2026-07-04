@@ -24,8 +24,8 @@ const ProfileCard = ({ user, isOwnProfile = true, onEditProfile, onSetting }) =>
                     {/* Avatar Bulat Besar */}
                     <div className="w-32 h-32 md:w-36 md:h-36 rounded-full border-4 border-white dark:border-gray-950 bg-gray-200 dark:bg-gray-800 overflow-hidden relative shadow-md shrink-0">
                         <Image
-                            src={activeUser.photo_profile_url}
-                            alt={activeUser.fullName}
+                            src={activeUser?.photo_profile_url}
+                            alt={activeUser?.fullName}
                             fill
                             sizes="(max-width: 768px) 128px, 144px"
                             className="object-cover"
@@ -36,11 +36,11 @@ const ProfileCard = ({ user, isOwnProfile = true, onEditProfile, onSetting }) =>
                     {/* Nama & Bio */}
                     <div className="flex flex-col gap-1 pb-2 min-w-0">
                         <h2 className="text-2xl md:text-3xl font-bold text-gray-950 dark:text-white tracking-tight truncate">
-                            {activeUser.fullName}
+                            {activeUser?.fullName}
                         </h2>
-                        <span className="text-xs font-medium text-gray-400 ">@{activeUser.username}</span>
+                        <span className="text-xs font-medium text-gray-400 ">@{activeUser?.username}</span>
                         <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xl leading-relaxed whitespace-pre-line wrap-break-word">
-                            {activeUser.bio}
+                            {activeUser?.bio}
                         </p>
                     </div>
                 </div>

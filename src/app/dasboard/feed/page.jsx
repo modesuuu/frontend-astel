@@ -50,19 +50,19 @@ const Feeds = () => {
 
   if (isLoading)
     return (
-      <div className="mx-60 px-36">
-        <FeedSkeleton count={2} />
+      <div className="mx-60 px-36 text-center">
+        <FeedSkeleton count={3} />
       </div>
     );
   if (error) return <p className="text-red-500 text-center">{error}</p>;
 
   return (
     <section className="pt-6 relative ">
-      <div className="mx-60 flex flex-col items-center ">
+      <div className="mx-60 flex flex-col items-center">
         <Header />
 
         {/* ini yang mau aku static kan */}
-        <div className="flex flex-col px-36 gap-6">
+        <div className="flex flex-col max-w-5xl gap-6">
           {/* mulai mapping dari sini */}
 
           {feedPosts.map((post) => (

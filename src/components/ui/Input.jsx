@@ -5,7 +5,7 @@ const Input = ({type = "text", placeholder = "", ...rest}) => {
     <>
     <input
         type={type} placeholder={placeholder} {...rest}
-        className="p-3 w-full rounded-full bg-transparent border border-gray-300 focus:outline-none"
+        className="p-3 w-full rounded-full bg-transparent border border-gray-300 focus:outline-none dark:text-white dark:border-gray-700"
     />
     </>
   )

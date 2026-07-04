@@ -14,7 +14,7 @@ const CollabCard = ({ project }) => {
       
       className="w-full"
     >
-      <div onClick={() => router.push(ROUTES.COLLAB_DETAIL(project.id))} className="flex flex-col gap-4 p-4 rounded-2xl hover:bg-white">
+      <div onClick={() => router.push(ROUTES.COLLAB_DETAIL(project.id))} className="flex flex-col gap-4 p-4 rounded-2xl hover:bg-white dark:hover:bg-gray-900">
         {/* Gambar Project masih Abu-abu placeholder */}
         <div className="w-full h-48 bg-gray-200 dark:bg-gray-800 rounded-xl overflow-hidden relative">
           {project.image && (
@@ -28,7 +28,7 @@ const CollabCard = ({ project }) => {
 
         {/* Info*/}
         <div className="flex flex-col gap-1">
-          <h3 className="text-lg font-semibold text-black leading-snug">
+          <h3 className="text-lg font-semibold text-black dark:text-gray-400 leading-snug">
             {project.title}
           </h3>
           <p className="text-sm text-secondary line-clamp-2">
