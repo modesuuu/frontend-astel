@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation.js";
 import { ROUTES } from "@/constants/routes.js";
 import { useRegister } from "@/hooks/useAuth.js";
+import { toast } from "sonner";
 
 const Register = () => {
   const [data, setData] = useState({});
@@ -16,11 +17,20 @@ const Register = () => {
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await register(data);
-    if (result.data.success) {
-      router.push(ROUTES.LOGIN);
+    try {
+      const result = await register(data);
+      if (result?.data?.success) {
+        toast.success(result?.message, { position: "top-right" });
+      }
+      router.push(ROUTES.HOME);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Username atau password salah",
+        {
+          position: "top-right",
+        },
+      );
     }
-    console.log(data);
   };
 
   const handleChange = (e) => {
@@ -40,7 +50,6 @@ const Register = () => {
             Create account
           </h1>
           <form className="w-full px-35" action="" onSubmit={handleSubmit}>
-            {error ? <p className="text-sm text-red-500">{error}</p> : null}
             <div className="flex flex-col gap-3 w-full">
               <Input
                 name="email"
