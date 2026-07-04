@@ -239,7 +239,7 @@ export default function ProfilePage() {
             <Banner
               bannerUrl={userProfile?.bannerUrl}
               isOwnProfile={true}
-              onEditBanner={() => alert("Modal ganti gambar banner terbuka!")}
+              onEditBanner={() => toast.error("Feature coming soon", { position: "top-right" })}
             />
             <div className="flex gap-6 justify-between pb-6 w-full">
               <ProfileCard

@@ -78,7 +78,6 @@ const ProfilePage = () => {
             <Banner
               bannerUrl={""}
               isOwnProfile={false}
-              onEditBanner={() => alert("Modal ganti gambar banner terbuka!")}
             />
             <div className="flex gap-6 justify-between pb-6">
               <ProfileCard
