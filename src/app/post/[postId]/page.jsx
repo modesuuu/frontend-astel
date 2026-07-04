@@ -6,6 +6,7 @@ import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { toast } from "sonner";
 import postService from "@/services/post.service";
 import useEditPost from "@/hooks/useEditPost.js";
+import { ROUTES } from "@/constants/routes.js";
 
 export default function PostEdit() {
   const { postId } = useParams();
@@ -48,7 +49,7 @@ export default function PostEdit() {
 
   const handleClose = () => {
     setOpen(false);
-    router.back();
+    router.push(ROUTES.HOME);
   };
 
   const handleChange = (e) => {
@@ -83,10 +84,9 @@ export default function PostEdit() {
     <Dialog open={open} onClose={handleClose} className="relative z-50">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/30 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/30 backdrop-blur-sm dark:bg-gray-950"
         aria-hidden="true"
       />
-
       {/* Panel wrapper */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="w-full max-w-md rounded-3xl bg-white dark:bg-gray-900 shadow-2xl overflow-hidden">

@@ -378,7 +378,7 @@ export default function ProfilePage() {
 
           {/* TAB 3: KONTEN LIST MY APPLICATIONS DINAMIS */}
           {activeTab === "my-applications" &&
-            (isLoading ? (
+            (isLoading || applicationsLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                 <div className="grid grid-cols-4 gap-4">
                   <MyAppsSkeleton count={4} />

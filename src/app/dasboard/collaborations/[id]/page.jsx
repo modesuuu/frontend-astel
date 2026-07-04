@@ -20,6 +20,7 @@ import { useAuthMe } from "@/hooks/useAuth.js";
 import timeAgo from "@/utils/timeAgo.js";
 import { useCreateApplication } from "@/hooks/useApplications.js";
 import { toast } from "sonner";
+import CollaborationDetailSkeleton from "@/components/collaborations/CollabDetailSkeleton.jsx";
 
 const CollaborationsDetail = ({ params: paramsPromise }) => {
   // dummy data, nanti diganti pake fetch data dari API
@@ -53,7 +54,6 @@ const CollaborationsDetail = ({ params: paramsPromise }) => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
   return (
     <div className="pt-6 relative mx-60">
       <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 mb-4">
@@ -67,36 +67,44 @@ const CollaborationsDetail = ({ params: paramsPromise }) => {
           Collaborations
         </h1>
       </div>
+      {isLoading || profileLoading ? (
+        <CollaborationDetailSkeleton />
+      ) : (
+        <>
+          {/* PROFIL PEMBUAT PROJECT */}
+          <Profile
+            id={collabData?.ownerId}
+            avatar={collabData?.avatarUrl}
+            name={collabData?.username}
+            time={timeAgo(collabData?.createdAt)}
+          />
 
-      {/* PROFIL PEMBUAT PROJECT */}
-      <Profile
-        id={collabData?.ownerId}
-        avatar={collabData?.avatarUrl}
-        name={collabData?.username}
-        time={timeAgo(collabData?.createdAt)}
-      />
+          {/* JUDUL DAN DESKRIPSI UTAMA */}
+          <div className="mt-4 flex flex-col gap-2">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+              {collabData?.title}
+            </h2>
+            <PostContent content={collabData?.description} />
+          </div>
 
-      {/* JUDUL DAN DESKRIPSI UTAMA */}
-      <div className="mt-4 flex flex-col gap-2">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-          {collabData?.title}
-        </h2>
-        <PostContent content={collabData?.description} />
-      </div>
+          {/* KOMPONEN BARU: METADATA & SKILLS */}
+          <CollabMeta
+            maxParticipants={collabData?.maxParticipants}
+            skills={collabData?.skills}
+          />
 
-      {/* KOMPONEN BARU: METADATA & SKILLS */}
-      <CollabMeta
-        maxParticipants={collabData?.maxParticipants}
-        skills={collabData?.skills}
-      />
+          {/* GALERI MEDIA (MENGGUNAKAN LIGHTBOX KITA SEBELUMNYA) */}
+          <div className="mt-4">
+            <PostGallery images={collabData?.media} />
+          </div>
 
-      {/* GALERI MEDIA (MENGGUNAKAN LIGHTBOX KITA SEBELUMNYA) */}
-      <div className="mt-4">
-        <PostGallery images={collabData?.media} />
-      </div>
-
-      {/* KOMPONEN BARU: FORM LAMARAN / APPLY */}
-      <CollabApplyForm profileApplicant={profile} onApply={handleApplyCollab} />
+          {/* KOMPONEN BARU: FORM LAMARAN / APPLY */}
+          <CollabApplyForm
+            profileApplicant={profile}
+            onApply={handleApplyCollab}
+          />
+        </>
+      )}
     </div>
   );
 };

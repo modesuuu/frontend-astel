@@ -14,16 +14,15 @@ import PostGallery from "@/components/feed/PostGallery";
 import useProfile from "@/hooks/useProfile.js";
 import { isAuthenticated } from "@/utils/auth.js";
 import { useAuthMe } from "@/hooks/useAuth.js";
-import {
-  profileMapping,
-  feedMapping,
-} from "@/mapping/profile.mapping.js";
+import { profileMapping, feedMapping } from "@/mapping/profile.mapping.js";
 import useCollabs, { useMyCollabs } from "@/hooks/useCollabs.js";
 import useMyPosts from "@/hooks/useMyPosts.js";
 import { ROUTES } from "@/constants/routes.js";
 import timeAgo from "@/utils/timeAgo.js";
 import { collaborationMapping } from "@/mapping/collaboration.mapping.js";
 import PillLink from "@/components/ui/Pillink.jsx";
+import ProfilePageSkeleton from "@/components/profile/ProfilePageSkeleton.jsx";
+import FeedSkeleton from "@/components/feed/FeedSkeleton.jsx";
 const ProfilePage = () => {
   const profileId = useParams().id;
   console.log("params", profileId);
@@ -48,7 +47,14 @@ const ProfilePage = () => {
   const userFeeds = feedMapping(posts);
   const userCollabs = collaborationMapping(myCollabs, userProfile);
 
-  console.log("userCollabs", userCollabs, `\nmyCollabs: \n`, myCollabs, `\nuserId: \n`, profileId);
+  console.log(
+    "userCollabs",
+    userCollabs,
+    `\nmyCollabs: \n`,
+    myCollabs,
+    `\nuserId: \n`,
+    profileId,
+  );
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -60,47 +66,38 @@ const ProfilePage = () => {
 
   // LOADING SKELETON SCREEN
   const isLoading = publicProfile.isLoading || postsLoading || collabsLoading;
-  if (isLoading) {
-    return (
-      <section className="pt-6 min-h-screen bg-white dark:bg-gray-950 flex">
-        <Sidebar />
-        <div className="mx-60 flex-1 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-2 text-gray-400">
-            <i className="bx bx-loader-alt animate-spin text-3xl text-indigo-600"></i>
-            <span className="text-sm font-medium">Loading profile...</span>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (isLoading) return <h1>Loading...</h1>;
   return (
     <section className="pt-6 relative min-h-screen bg-white dark:bg-gray-950">
       <Sidebar />
 
       <div className="ml-60 mr-6 flex flex-col gap-6">
-        <Banner
-          bannerUrl={""}
-          isOwnProfile={false}
-          onEditBanner={() => alert("Modal ganti gambar banner terbuka!")}
-        />
-        <div className="flex gap-6 justify-between pb-6">
-          <ProfileCard
-            user={userProfile}
-            isOwnProfile={false}
-            onEditProfile={() => router.push("/profile/edit")}
-            onSetting={() => router.push("/settings")}
-          />
+        {isLoading ? (
+          <ProfilePageSkeleton />
+        ) : (
+          <>
+            <Banner
+              bannerUrl={""}
+              isOwnProfile={false}
+              onEditBanner={() => alert("Modal ganti gambar banner terbuka!")}
+            />
+            <div className="flex gap-6 justify-between pb-6">
+              <ProfileCard
+                user={userProfile}
+                isOwnProfile={false}
+                onEditProfile={() => router.push("/profile/edit")}
+                onSetting={() => router.push("/settings")}
+              />
 
-          <div className=" flex flex-col items-end pt-4 px-6">
-            <SocialMediaLinks links={userProfile?.socialMedia} />
-            {/* <PillLink href={userProfile?.socialMedia} platform= >
+              <div className=" flex flex-col items-end pt-4 px-6">
+                <SocialMediaLinks links={userProfile?.socialMedia} />
+                {/* <PillLink href={userProfile?.socialMedia} platform= >
               {userProfile?.socialMedia}
             </PillLink> */}
-            <SkillBadges skills={userProfile?.skills} />
-          </div>
-        </div>
+                <SkillBadges skills={userProfile?.skills} />
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-900 pb-2">
@@ -127,49 +124,57 @@ const ProfilePage = () => {
           </div>
 
           {/* TAB 1: KONTEN LIST FEEDS DINAMIS */}
-          {activeTab === "feeds" && (
-            <div className="flex flex-col gap-8">
-              {userFeeds.length > 0 ? (
-                userFeeds.map((feed) => (
-                  <div key={feed._id}>
-                    <Profile
-                      avatar={userProfile?.photo_profile_url}
-                      name={userProfile?.username}
-                      time={timeAgo(feed.time)}
-                    />
+          {activeTab === "feeds" &&
+            (isLoading ? (
+              <FeedSkeleton count={3} />
+            ) : (
+              <div className="flex flex-col gap-8">
+                {userFeeds.length > 0 ? (
+                  userFeeds.map((feed) => (
+                    <div key={feed._id}>
+                      <Profile
+                        avatar={userProfile?.photo_profile_url}
+                        name={userProfile?.username}
+                        time={timeAgo(feed.time)}
+                      />
 
-                    <PostContent content={feed.description} />
+                      <PostContent content={feed.description} />
 
-                    <PostGallery images={feed.mediaUrls} />
-                    {/* <div className="flex items-center gap-6 text-xs text-gray-400 mt-1">
+                      <PostGallery images={feed.mediaUrls} />
+                      {/* <div className="flex items-center gap-6 text-xs text-gray-400 mt-1">
                         <span className="flex items-center gap-1"><i className="bx bx-show text-sm"></i> 124</span>
                         <span className="flex items-center gap-1 hover:text-pink-600 cursor-pointer transition-colors"><i className="bx bx-heart text-sm"></i> 42</span>
                         <span className="flex items-center gap-1 hover:text-indigo-500 cursor-pointer transition-colors"><i className="bx bx-message-circle text-sm"></i> Comment</span>
                       </div> */}
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-sm text-gray-400 text-center py-12">
+                    Belum ada postingan feed.
                   </div>
-                ))
-              ) : (
-                <div className="text-sm text-gray-400 text-center py-12">
-                  Belum ada postingan feed.
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            ))}
 
           {/* TAB 2: KONTEN LIST COLLABORATIONS DINAMIS */}
-          {activeTab === "collaborations" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {Array.isArray(userCollabs) && userCollabs.length > 0 ? (
-                userCollabs.map((project) => (
-                  <CollabCard key={project.id} project={project} />
-                ))
-              ) : (
-                <div className="col-span-2 text-sm text-gray-400 text-center py-12 bg-gray-50 dark:bg-gray-900/30 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
-                  Belum ada proyek kolaborasi yang diajukan.
-                </div>
-              )}
-            </div>
-          )}
+          {activeTab === "collaborations" &&
+            (isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FeedSkeleton count={4} />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {Array.isArray(userCollabs) && userCollabs.length > 0 ? (
+                  userCollabs.map((project) => (
+                    <CollabCard key={project.id} project={project} />
+                  ))
+                ) : (
+                  <div className="col-span-2 text-sm text-gray-400 text-center py-12 bg-gray-50 dark:bg-gray-900/30 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
+                    Belum ada proyek kolaborasi yang diajukan.
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
       </div>
     </section>
