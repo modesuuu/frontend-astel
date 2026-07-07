@@ -140,7 +140,7 @@ const EditProfilePage = () => {
       if (selectedPhoto) {
         // uploadImages expects array → returns array of URL strings
         // Kalau gagal, hook akan throw (setelah fix useCloudinary.js)
-        const uploaded = await uploadImages([selectedPhoto]);
+        const uploaded = await uploadImages([selectedPhoto], "profiles");
 
         // uploaded = ["https://res.cloudinary.com/..."]
         photoUrl = uploaded[0].secure_url;

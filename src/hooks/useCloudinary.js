@@ -6,11 +6,11 @@ export default function useCloudinary() {
   const [error, setError] = useState(null);
   const [uploadedMedias, setuploadedMedias] = useState([]);
 
-  async function uploadImages(files) {
+  async function uploadImages(files, preset) {
     try {
       setIsLoading(true);
 
-      const promises = files.map((file) => cloudinaryService.uploadImage(file));
+      const promises = files.map((file) => cloudinaryService.uploadImage(file, preset));
 
       const medias = await Promise.all(promises);
 

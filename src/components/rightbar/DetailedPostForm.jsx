@@ -78,7 +78,7 @@ const DetailedPostForm = ({ isCollabMode, onClose }) => {
 
     try {
       const mediaUploadeds = imageFiles.length
-        ? await uploadImages(imageFiles)
+        ? await uploadImages(imageFiles, isCollabMode ? "collabs" : "posts")
         : [];
       const mediaUrls = mediaUploadeds.map((item) => item.secure_url);
       const mediaPublicIds = mediaUploadeds.map((item) => item.public_id);
@@ -231,6 +231,7 @@ const DetailedPostForm = ({ isCollabMode, onClose }) => {
                 <option
                   key={skill._id}
                   value={skill._id}
+                  className="text-gray-900 dark:text-white"
                   disabled={formData.skillsNeeded.includes(skill._id)}
                 >
                   {skill.skillName}
