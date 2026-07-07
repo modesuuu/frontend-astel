@@ -153,12 +153,11 @@ export default function ProfilePage() {
     isLoading: applicationsLoading,
     error: applicationsError,
   } = useApplications();
-  // console.log("userFeeds", userFeeds);
-  // console.log("uesrCOllab", userCollabs, `userId: \n`, userId);
 
   const [deletingPostId, setDeletingPostId] = useState(null);
 
   const router = useRouter();
+
   useEffect(() => {
     if (!isAuthenticated()) {
       router.push("/auth/login");
@@ -166,6 +165,7 @@ export default function ProfilePage() {
     }
     refreshProfile();
   }, [refreshProfile, router]);
+  
   const collaborationList = collaborationMapping(userCollabs);
   console.log("collaborationList", userCollabs);
   const handleDeletePost = async (postId) => {
@@ -211,16 +211,6 @@ export default function ProfilePage() {
     router.push(`/post/${postId}`);
   };
 
-  // if (isLoading) {
-  //   return (
-  //     <section className="pt-6 min-h-screen bg-white dark:bg-gray-950 flex">
-  //       <Sidebar />
-  //       <div className="mx-60 flex-1 flex items-center justify-center">
-  //         <ProfilePageSkeleton />
-  //       </div>
-  //     </section>
-  //   );
-  // }
   if (error) return <h1>{error}</h1>;
   console.log({
     profileLoading: isLoading,
@@ -239,7 +229,9 @@ export default function ProfilePage() {
             <Banner
               bannerUrl={userProfile?.bannerUrl}
               isOwnProfile={true}
-              onEditBanner={() => toast.error("Feature coming soon", { position: "top-right" })}
+              onEditBanner={() =>
+                toast.error("Feature coming soon", { position: "top-right" })
+              }
             />
             <div className="flex gap-6 justify-between pb-6 w-full">
               <ProfileCard
