@@ -21,7 +21,7 @@ const EditProfilePage = () => {
   // Track blob URL aktif supaya bisa di-revoke (mencegah memory leak)
   const previewUrlRef = useRef(null);
 
-  const router = useRouter();`
+  const router = useRouter();
   const { profile, isLoading } = useAuthMe();
   const { updateProfile, isLoading: updating } = useUpdateProfile();
   const { uploadImages, isLoading: uploading } = useCloudinary();
