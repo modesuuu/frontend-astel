@@ -77,19 +77,24 @@ const DetailedPostForm = ({ isCollabMode, onClose }) => {
     setLoading(true);
 
     try {
-      const mediaUrls = imageFiles.length ? await uploadImages(imageFiles) : [];
-      console.log("mediaUrls: ", mediaUrls);
+      const mediaUploadeds = imageFiles.length
+        ? await uploadImages(imageFiles)
+        : [];
+      const mediaUrls = mediaUploadeds.map((item) => item.secure_url);
+      const mediaPublicIds = mediaUploadeds.map((item) => item.public_id);
+      
+      console.log("mediaUploadeds: ", mediaUploadeds);
       if (isCollabMode) {
-        const payload = mapCollabPayload(formData, mediaUrls);
+        const payload = mapCollabPayload(formData, mediaUrls, mediaPublicIds);
         await collabService.createCollab(payload);
       } else {
-        const payload = mapPostPayload(formData, mediaUrls);
+        const payload = mapPostPayload(formData, mediaUrls, mediaPublicIds);
         await postService.createPost(payload);
       }
       onClose();
     } catch (err) {
       setError(err.response?.data?.message || "Gagal membuat post");
-      console.log("ERROR",err);
+      console.log("ERROR", err);
     } finally {
       setLoading(false);
     }
@@ -175,7 +180,7 @@ const DetailedPostForm = ({ isCollabMode, onClose }) => {
           </div>
         )}
         {isCollabMode && (
-            <div className="space-y-1.5">
+          <div className="space-y-1.5">
             <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 pl-1">
               External Communication Url
             </label>

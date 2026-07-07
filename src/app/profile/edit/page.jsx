@@ -21,15 +21,18 @@ const EditProfilePage = () => {
   // Track blob URL aktif supaya bisa di-revoke (mencegah memory leak)
   const previewUrlRef = useRef(null);
 
-  const router = useRouter();
+  const router = useRouter();`
   const { profile, isLoading } = useAuthMe();
   const { updateProfile, isLoading: updating } = useUpdateProfile();
   const { uploadImages, isLoading: uploading } = useCloudinary();
   const { skills } = useSkills();
-  const [form, setForm] = useState({
+  const [ form, setForm] = useState({
     fullName: "",
     bio: "",
+
     photo_profile_url: "",
+    photo_profile_public_id: "",
+
     institusi: "",
     skills: [],
     socialMedia: [],
@@ -40,14 +43,18 @@ const EditProfilePage = () => {
     if (!profile?.data) return;
 
     setForm({
-      fullName: profile.data.fullName || "",
-      bio: profile.data.bio || "",
-      photo_profile_url: profile.data.photo_profile_url || "",
-      institusi: profile.data.institusi || "",
-      skills: profile.data.skills.map((s) => s._id),
-      socialMedia: profile.data.socialMedia || [],
+      fullName: profile?.data.fullName || "",
+      bio: profile?.data.bio || "",
+
+      photo_profile_url: profile?.data.photo_profile_url || "",
+      photo_profile_public_id: profile?.data.photo_profile_public_id || "",
+
+      institusi: profile?.data.institusi || "",
+      skills: profile?.data.skills.map((s) => s._id),
+      socialMedia: profile?.data.socialMedia || [],
     });
   }, [profile]);
+  console.log("form edit",form);
 
   // Revoke blob URL saat komponen unmount
   useEffect(() => {
@@ -128,14 +135,17 @@ const EditProfilePage = () => {
 
     try {
       let photoUrl = form.photo_profile_url;
+      let photoPublicId = form.photo_profile_public_id;
 
       if (selectedPhoto) {
         // uploadImages expects array → returns array of URL strings
         // Kalau gagal, hook akan throw (setelah fix useCloudinary.js)
-        const urls = await uploadImages([selectedPhoto]);
+        const uploaded = await uploadImages([selectedPhoto]);
 
-        // urls = ["https://res.cloudinary.com/..."]
-        photoUrl = urls[0];
+        // uploaded = ["https://res.cloudinary.com/..."]
+        photoUrl = uploaded[0].secure_url;
+        photoPublicId = uploaded[0].public_id;
+        console.log("uploaded", uploaded);
 
         // Revoke blob preview sekarang sudah ada URL Cloudinary asli
         if (previewUrlRef.current) {
@@ -148,7 +158,10 @@ const EditProfilePage = () => {
       const payload = {
         fullName: form.fullName,
         bio: form.bio,
+
         photo_profile_url: photoUrl,
+        photo_profile_public_id: photoPublicId,
+
         institusi: form.institusi,
         skills: form.skills,
         socialMedia: form.socialMedia,

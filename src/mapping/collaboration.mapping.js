@@ -49,7 +49,7 @@ export function collaborationDetailMapping(data) {
     updatedAt: data.updatedAt,
   };
 }
-export function mapCollabPayload(formData, mediaUrls) {
+export function mapCollabPayload(formData, mediaUrls, mediaPublicIds) {
   return {
     title: formData.title,
     description: formData.description,
@@ -57,5 +57,6 @@ export function mapCollabPayload(formData, mediaUrls) {
     communicationUrl: formData.communicationUrl,
     skillsNeeded: formData.skillsNeeded,
     mediaUrls,
+    mediaPublicIds,
   };
 }

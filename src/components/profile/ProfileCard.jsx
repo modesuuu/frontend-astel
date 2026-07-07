@@ -42,6 +42,9 @@ const ProfileCard = ({ user, isOwnProfile = true, onEditProfile, onSetting }) =>
                         <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xl leading-relaxed whitespace-pre-line wrap-break-word">
                             {activeUser?.bio}
                         </p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 tracking-wide text-bold py-2">
+                            {activeUser?.institusi}
+                        </p>
                     </div>
                 </div>
 

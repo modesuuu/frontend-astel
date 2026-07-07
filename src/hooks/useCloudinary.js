@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function useCloudinary() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [uploadedUrls, setUploadedUrls] = useState([]);
+  const [uploadedMedias, setuploadedMedias] = useState([]);
 
   async function uploadImages(files) {
     try {
@@ -12,11 +12,11 @@ export default function useCloudinary() {
 
       const promises = files.map((file) => cloudinaryService.uploadImage(file));
 
-      const urls = await Promise.all(promises);
+      const medias = await Promise.all(promises);
 
-      setUploadedUrls(urls);
+      setuploadedMedias(medias);
 
-      return urls;
+      return medias;
     } catch (err) {
       const message = err.response?.data?.message || "Gagal mengupload gambar";
       setError(message);
@@ -29,7 +29,7 @@ export default function useCloudinary() {
   return {
     isLoading,
     error,
-    uploadedUrls, // url yang di masukan ke database
+    uploadedMedias, // url yang di masukan ke database
     uploadImages, // fungsi upload foto
   }
 } 

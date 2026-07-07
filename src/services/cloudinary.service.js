@@ -13,7 +13,11 @@ const cloudinaryService = {
     });
     console.log("dari cloudinary: service", NEXT_PUBLIC_CLOUDINARY_URL);
     const result = await response.json();
-    return result.secure_url;
+    console.log("DARI SERVICE FRONTEND CLOUDINARY",result);
+    return {
+      secure_url: result.secure_url,
+      public_id: result.public_id,
+    };
   },
 };
 
