@@ -54,7 +54,19 @@ const Feeds = () => {
         <FeedSkeleton count={3} />
       </div>
     );
-  if (error) return <p className="text-red-500 text-center">{error}</p>;
+
+  if (error) {
+    return (
+      <section className="pt-6 relative">
+        <div className="mx-60">
+          <Header />
+          <div className="mt-6 text-center text-red-500">
+            <p>{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="pt-6 relative ">
