@@ -73,7 +73,7 @@ const Sidebar = () => {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <DialogPanel className="fixed left-0 top-0 flex h-screen w-72 max-w-[80vw] flex-col justify-between bg-white px-6 py-6 shadow-lg dark:bg-gray-900">
+            <DialogPanel className="fixed left-0 top-0 flex h-screen w-72 max-w-[80vw] flex-col justify-between bg-white px-6 pt-6 pb-16 md:pt-0 md:pb-0 md:py-6 shadow-lg dark:bg-gray-900">
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
