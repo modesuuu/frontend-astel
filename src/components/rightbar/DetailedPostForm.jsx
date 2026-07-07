@@ -186,7 +186,7 @@ const DetailedPostForm = ({ isCollabMode, onClose }) => {
             </label>
             <input
               type="url"
-              placeholder="https://example.com"
+              placeholder="https://discord.com/channel/123456789"
               value={formData.communicationUrl}
               onChange={(e) =>
                 setFormData({
