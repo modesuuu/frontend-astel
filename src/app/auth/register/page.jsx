@@ -42,14 +42,14 @@ const Register = () => {
 
   return (
     <section>
-      <div className="flex items-center w-full h-screen justify-between px-16 dark:bg-slate-900">
-        <Image src={illus} alt="Auth ilustration" className="ml-36" />
+      <div className="flex items-center w-full min-h-screen md:h-screen justify-between px-12 md:px-16 dark:bg-slate-900">
+        <Image src={illus} alt="Auth ilustration" className="ml-36 hidden md:flex" />
         <div className="flex flex-col gap-6 justify-center h-full w-full max-w-141.5 items-center">
-          <Image src={logoApp} alt="Astel logo" />
-          <h1 className="text-primary text-center font-medium max-w-70 text-6xl">
+          <Image src={logoApp} alt="Astel logo"/>
+          <h1 className="text-primary text-center font-medium max-w-70 text-5xl md:text-6xl">
             Create account
           </h1>
-          <form className="w-full px-35" action="" onSubmit={handleSubmit}>
+          <form className="w-full px-0 md:px-35" action="" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-3 w-full">
               <Input
                 name="email"

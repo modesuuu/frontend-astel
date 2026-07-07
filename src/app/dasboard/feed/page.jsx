@@ -50,7 +50,7 @@ const Feeds = () => {
 
   if (isLoading)
     return (
-      <div className="mx-60 px-36 text-center">
+      <div className="mx-8 md:mx-60 md:px-36 text-center">
         <FeedSkeleton count={3} />
       </div>
     );
@@ -58,7 +58,7 @@ const Feeds = () => {
   if (error) {
     return (
       <section className="pt-6 relative">
-        <div className="mx-60">
+        <div className="mx-8 md:mx-60">
           <Header />
           <div className="mt-6 text-center text-red-500">
             <p>{error}</p>
@@ -70,7 +70,7 @@ const Feeds = () => {
 
   return (
     <section className="pt-6 relative ">
-      <div className="mx-60 flex flex-col items-center">
+      <div className="mx-8 md:mx-60 flex flex-col items-center">
         <Header />
 
         {/* ini yang mau aku static kan */}

@@ -9,8 +9,8 @@ const layout = ({ children }) => {
       <div className="bg-[#F7F6FE] dark:bg-gray-950 min-h-screen">
         <main>
           <Sidebar />
-          <RightProfileSidebar classNameSection="hidden md:block " />
-          <div className="pr-26">{children}</div>
+          <RightProfileSidebar classNameSection="hidden md:block" />
+          <div className="pr-0 md:pr-26">{children}</div>
         </main>
       </div>
     </AuthGuard>

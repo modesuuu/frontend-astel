@@ -132,17 +132,17 @@ const FeedDetailPage = ({ params: paramsPromise }) => {
   if (error) return <p>{error}</p>;
 
   if (!dummyPost) {
-    <div className="pt-6 relative mx-60">
+    <div className="pt-6 relative mx-8 md:mx-60">
       <FeedCardSkeleton count={1} />
     </div>;
   }
   return (
-    <div className="pt-6 relative mx-60">
+    <div className="pt-6 relative mx-8 md:mx-60">
       {/* TOP BAR */}
-      <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 mb-4">
+      <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 mb-4 justify-center md:justify-start">
         <Link
           href="/dasboard/feed"
-          className="text-gray-600 dark:text-gray-400 flex items-center hover:text-black dark:hover:text-white"
+          className="text-gray-600 dark:text-gray-400 flex items-center hover:text-black dark:hover:text-white hidden md:flex"
         >
           <i className="bx bx-arrow-left-stroke text-2xl"></i>
         </Link>

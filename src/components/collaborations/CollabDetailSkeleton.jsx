@@ -31,7 +31,7 @@ export default function CollaborationDetailSkeleton() {
             <div className="h-2.5 w-24 rounded-full bg-gray-200 dark:bg-gray-800" />
             <div className="flex items-center gap-2 mt-1">
               <div className="h-7 w-24 rounded-full bg-gray-200 dark:bg-gray-800" />
-              <div className="h-7 w-24 rounded-full bg-gray-200 dark:bg-gray-800" />
+              <div className="hidden md:block h-7 w-24 rounded-full bg-gray-200 dark:bg-gray-800" />
             </div>
           </div>
         </div>

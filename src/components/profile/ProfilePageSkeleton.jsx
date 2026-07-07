@@ -6,7 +6,7 @@ export default function ProfilePageSkeleton() {
       {/* ── Banner ── */}
       <div className="w-full h-52 rounded-3xl bg-gray-200 dark:bg-gray-800" />
 
-      <div className="flex gap-6 justify-between pb-6 w-full mt-4">
+      <div className="flex flex-col md:flex-row gap-6 md:justify-between pb-6 w-full border-b md:border-b-0 border-gray-200 dark:border-gray-900 mt-4">
         {/* ── Kiri: Avatar + nama + bio + tombol ── */}
         <div className="flex flex-col gap-4 min-w-0">
           {/* Avatar — overlap banner */}

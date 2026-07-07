@@ -82,7 +82,7 @@ const DetailedPostForm = ({ isCollabMode, onClose }) => {
         : [];
       const mediaUrls = mediaUploadeds.map((item) => item.secure_url);
       const mediaPublicIds = mediaUploadeds.map((item) => item.public_id);
-      
+
       console.log("mediaUploadeds: ", mediaUploadeds);
       if (isCollabMode) {
         const payload = mapCollabPayload(formData, mediaUrls, mediaPublicIds);
@@ -221,17 +221,17 @@ const DetailedPostForm = ({ isCollabMode, onClose }) => {
                   toggleSkill(e.target.value);
                 }
               }}
-              className="w-full rounded-xl bg-white dark:bg-gray-950 px-4 py-2.5 text-xs border border-transparent dark:border-gray-800 focus:border-indigo-500"
+              className="w-full text-gray-900 dark:text-gray-400 rounded-xl bg-white dark:bg-gray-950 px-4 py-2.5 text-xs border border-transparent dark:border-gray-800 focus:border-indigo-500"
             >
               <option value="" disabled>
-                Pilih skill
+                Add skills
               </option>
 
               {availableSkills.map((skill) => (
                 <option
                   key={skill._id}
                   value={skill._id}
-                  className="text-gray-900 dark:text-white"
+                  className="text-gray-900 dark:text-gray-400"
                   disabled={formData.skillsNeeded.includes(skill._id)}
                 >
                   {skill.skillName}

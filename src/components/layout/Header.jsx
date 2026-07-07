@@ -12,8 +12,8 @@ const Header = () => {
     const isCollab = pathname.startsWith('/dasboard/collaborations');
 
     return (
-        <div className="sticky top-0 z-10 flex w-full justify-between bg-[#F7F6FE] dark:bg-gray-950 items-center pb-4 pt-2">
-            <h1 className="text-2xl font-medium capitalize dark:text-gray-400">
+        <div className="sticky top-0 z-10 flex w-full justify-center md:justify-between bg-[#F7F6FE] dark:bg-gray-950 items-center pb-4 pt-2">
+            <h1 className="text-2xl font-medium capitalize dark:text-gray-400 hidden md:block">
                 {isCollab ? "Collaborations" : "Feeds"}
             </h1>
 

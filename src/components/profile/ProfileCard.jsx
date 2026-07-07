@@ -50,7 +50,7 @@ const ProfileCard = ({ user, isOwnProfile = true, onEditProfile, onSetting }) =>
 
                 {/* Sisi Kanan: Tombol Aksi (Hanya muncul jika isOwnProfile = true) */}
                 {isOwnProfile && (
-                    <div className="flex items-center gap-3 pb-2 shrink-0">
+                    <div className="hidden md:flex items-center gap-3 pb-2 shrink-0">
                         <button
                             type="button"
                             onClick={onEditProfile}

@@ -22,7 +22,7 @@ const CommentItem = ({ comment, onDelete, currentUserId }) => {
           <svg
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="w-4 h-4 opacity-70 group-hover:text-red-500"
+            className="w-4 h-4 opacity-70 group-hover:text-red-500 dark:text-gray-300 dark:group-hover:text-red-400"
           >
             <path
               fillRule="evenodd"

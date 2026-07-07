@@ -165,7 +165,7 @@ export default function ProfilePage() {
     }
     refreshProfile();
   }, [refreshProfile, router]);
-  
+
   const collaborationList = collaborationMapping(userCollabs);
   console.log("collaborationList", userCollabs);
   const handleDeletePost = async (postId) => {
@@ -221,7 +221,7 @@ export default function ProfilePage() {
   return (
     <section className="pt-6 relative min-h-screen bg-white dark:bg-gray-950">
       <Sidebar />
-      <div className="ml-60 mr-6 flex flex-col gap-6">
+      <div className="my-12 px-4 md:mt-0 md:ml-60 md:mr-6 md:px-0 flex flex-col gap-6 ">
         {isLoading ? (
           <ProfilePageSkeleton />
         ) : (
@@ -233,7 +233,7 @@ export default function ProfilePage() {
                 toast.error("Feature coming soon", { position: "top-right" })
               }
             />
-            <div className="flex gap-6 justify-between pb-6 w-full">
+            <div className="flex flex-col md:flex-row gap-6 md:justify-between pb-6 w-full border-b md:border-b-0 border-gray-200 dark:border-gray-900">
               <ProfileCard
                 user={userProfile?.data}
                 isOwnProfile={true}
@@ -241,9 +241,25 @@ export default function ProfilePage() {
                 onSetting={() => router.push("/settings")}
               />
 
-              <div className=" flex flex-col items-end pt-4 px-6">
+              <div className=" flex flex-col items-end pt-4 px-6 ">
                 <SocialMediaLinks links={userProfile?.data.socialMedia} />
                 <SkillBadges skills={userProfile?.data.skills} />
+                <div className="flex md:hidden items-center justify-center w-full gap-3 pt-6 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => router.push("/profile/edit")}
+                    className="px-5 py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-all shadow-sm focus:outline-none select-none cursor-pointer"
+                  >
+                    Edit Profile
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => router.push("/settings")}
+                    className="px-5 py-2 rounded-full bg-white dark:bg-gray-900 border border-primary hover:bg-gray-50 dark:hover:bg-gray-800/60 text-gray-800 dark:text-gray-200 text-sm font-semibold transition-all shadow-sm focus:outline-none select-none cursor-pointer"
+                  >
+                    Setting
+                  </button>
+                </div>
               </div>
             </div>
           </>
@@ -362,7 +378,7 @@ export default function ProfilePage() {
                   ))
                 ) : (
                   <div className="col-span-2 text-sm text-gray-400 text-center py-12 bg-gray-50 dark:bg-gray-900/30 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
-                    Belum ada proyek kolaborasi yang diajukan.
+                    No collaborations.
                   </div>
                 )}
               </div>
@@ -372,15 +388,16 @@ export default function ProfilePage() {
           {activeTab === "my-applications" &&
             (isLoading || applicationsLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <MyAppsSkeleton count={4} />
                 </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                 {/* {activeTab === "my-applications" && (...)} */}
-                <div className="grid grid-cols-4 gap-4">
-                  {applications?.data?.map((app) => {
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  {applications?.data?.length > 0 ? (
+                    applications?.data?.map((app) => {
                     /* ── Status config ── */
                     const statusMap = {
                       pending: {
@@ -495,7 +512,12 @@ export default function ProfilePage() {
                         />
                       </div>
                     );
-                  })}
+                  })
+                  ) : (
+                    <div className="col-span-2 text-sm text-gray-400 text-center py-12 bg-gray-50 dark:bg-gray-900/30 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
+                      No applications.
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

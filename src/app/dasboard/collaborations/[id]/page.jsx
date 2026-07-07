@@ -55,14 +55,14 @@ const CollaborationsDetail = ({ params: paramsPromise }) => {
   };
 
   return (
-    <div className="pt-6 relative mx-60">
-      <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 mb-4">
-        <Link
+    <div className="pt-6 relative mx-8 md:mx-60">
+      <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 mb-4 justify-center md:justify-start">
+        <a
           href={ROUTES.HOME}
-          className="text-gray-600 dark:text-gray-400 flex items-center hover:text-black dark:hover:text-white transition-colors"
+          className="text-gray-600 hidden md:flex dark:text-gray-400 items-center hover:text-black dark:hover:text-white transition-colors "
         >
           <i className="bx bx-arrow-left-stroke text-2xl"></i>
-        </Link>
+        </a>
         <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
           Collaborations
         </h1>

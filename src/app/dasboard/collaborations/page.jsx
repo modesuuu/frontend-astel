@@ -13,7 +13,7 @@ const Collaborations = () => {
 
   if (isLoading) {
     return (
-      <div className="mx-60 grid grid-cols-2 gap-8">
+      <div className="mx-8 md:mx-60 grid md:grid-cols-2 md:gap-8">
         <FeedSkeleton count={6} />
       </div>
     );
@@ -22,7 +22,7 @@ const Collaborations = () => {
   if (error) {
     return (
       <section className="pt-6 relative">
-        <div className="mx-60">
+        <div className="mx-8 md:mx-60">
           <Header />
           <div className="mt-6 text-center text-red-500">
             <p>{error}</p>
@@ -54,10 +54,10 @@ const Collaborations = () => {
   console.log("collaborationList", collaborationList);
   return (
     <section className="pt-6 relative">
-      <div className="mx-60">
+      <div className="mx-8 md:mx-60">
         <Header />
 
-        <div className="grid grid-cols-2 gap-6 mt-6">
+        <div className="grid md:grid-cols-2 gap-6 mt-6">
           {collaborationList.map((project) => (
             <CollabCard key={project.id} project={project} />
           ))}

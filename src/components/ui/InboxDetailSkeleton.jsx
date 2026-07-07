@@ -2,7 +2,7 @@
 
 export default function InboxDetailSkeleton() {
   return (
-    <div className="flex-1 bg-transparent ml-60 mt-6 animate-pulse">
+    <div className="flex-1 bg-transparent ml-4 md:ml-60 mt-16 md:mt-6 animate-pulse">
       {/* Profile header row */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">

@@ -70,7 +70,7 @@ const ProfilePage = () => {
     <section className="pt-6 relative min-h-screen bg-white dark:bg-gray-950">
       <Sidebar />
 
-      <div className="ml-60 mr-6 flex flex-col gap-6">
+      <div className="my-12 px-4 md:mt-0 md:ml-60 md:mr-6 md:px-0 flex flex-col gap-6">
         {isLoading ? (
           <ProfilePageSkeleton />
         ) : (
@@ -79,7 +79,7 @@ const ProfilePage = () => {
               bannerUrl={""}
               isOwnProfile={false}
             />
-            <div className="flex gap-6 justify-between pb-6">
+            <div className="flex flex-col md:flex-row  gap-6 justify-between pb-6">
               <ProfileCard
                 user={userProfile}
                 isOwnProfile={false}

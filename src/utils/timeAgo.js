@@ -13,12 +13,12 @@ export default function timeAgo(dateStr) {
   const months  = Math.floor(days / 30);
   const years   = Math.floor(days / 365);
 
-  if (seconds < 60)  return "Baru saja";
-  if (minutes < 60)  return `${minutes} menit lalu`;
-  if (hours < 24)    return `${hours} jam lalu`;
-  if (days === 1)    return "Kemarin";
-  if (days < 7)      return `${days} hari lalu`;
-  if (weeks < 4)     return `${weeks} minggu lalu`;
-  if (months < 12)   return `${months} bulan lalu`;
-  return `${years} tahun lalu`;
+  if (seconds < 60)  return "Just now";
+  if (minutes < 60)  return `${minutes} Minute ago`;
+  if (hours < 24)    return `${hours} hours ago`;
+  if (days === 1)    return "Yesterday";
+  if (days < 7)      return `${days} days ago`;
+  if (weeks < 4)     return `${weeks} weeks ago`;
+  if (months < 12)   return `${months} months ago`;
+  return `${years} years ago`;
 }

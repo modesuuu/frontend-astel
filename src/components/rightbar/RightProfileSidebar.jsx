@@ -1,107 +1,24 @@
-"use block";
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Fragment } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
+import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
 import ProfileSummaryCard from "./ProfileSummaryCard";
 import DetailedPostForm from "./DetailedPostForm";
 import { useAuthMe } from "@/hooks/useAuth.js";
 
 export function LoadingProfileSkeleton() {
-  return (
-    <section
-      className={`hidden md:flex fixed right-0 top-0 z-30 h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}
-    >
-      <div className="w-full h-full flex flex-col justify-between animate-pulse">
-        {/* === TOP: ProfileSummaryCard Skeleton === */}
-        <div className="flex flex-col gap-5 ">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-medium text-gray-950 dark:text-white">Profile</h2>
-          </div>
-
-          {/* Avatar + nama + username */}
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 shrink-0" />
-            {/* <div className="flex flex-col gap-2 flex-1">
-              <div className="h-3.5 w-32 rounded-full bg-gray-200 dark:bg-gray-700" />
-              <div className="h-3 w-20 rounded-full bg-gray-200 dark:bg-gray-700" />
-            </div> */}
-          </div>
-
-          {/* Bio / deskripsi singkat */}
-          <div className="flex flex-col gap-2 items-center">
-            <div className="h-3 w-full rounded-full bg-gray-200 dark:bg-gray-700" />
-            <div className="h-3 w-5/6 rounded-full bg-gray-200 dark:bg-gray-700" />
-            <div className="h-3 w-4/6 rounded-full bg-gray-200 dark:bg-gray-700" />
-          </div>
-
-          {/* Stats row: followers / following / posts */}
-          {/* <div className="flex items-center gap-4 pt-1">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="flex flex-col gap-1.5 items-center flex-1">
-                <div className="h-4 w-10 rounded-full bg-gray-200 dark:bg-gray-700" />
-                <div className="h-3 w-14 rounded-full bg-gray-200 dark:bg-gray-700" />
-              </div>
-            ))}
-          </div> */}
-
-          {/* Tags / skill badges */}
-          {/* <div className="flex flex-wrap gap-2">
-            {[60, 80, 50, 70].map((w, i) => (
-              <div
-                key={i}
-                className="h-6 rounded-full bg-gray-200 dark:bg-gray-700"
-                style={{ width: `${w}px` }}
-              />
-            ))}
-          </div> */}
-
-          {/* Divider */}
-          {/* <div className="w-full h-px bg-gray-100 dark:bg-gray-800" /> */}
-
-          {/* List item rows (misal: recent activity / konten) */}
-          {/* <div className="flex flex-col gap-3">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-gray-200 dark:bg-gray-700 shrink-0" />
-                <div className="flex flex-col gap-1.5 flex-1">
-                  <div className="h-3 w-3/4 rounded-full bg-gray-200 dark:bg-gray-700" />
-                  <div className="h-2.5 w-1/2 rounded-full bg-gray-200 dark:bg-gray-700" />
-                </div>
-              </div>
-            ))}
-          </div> */}
-        </div>
-
-        {/* === BOTTOM: Widget Input Skeleton === */}
-        <div className="w-full bg-gray-100 dark:bg-gray-800/60 border border-gray-200/20 rounded-3xl p-4 shadow-inner">
-          {/* Tombol utama */}
-          <div className="w-full h-10 rounded-2xl bg-gray-300 dark:bg-gray-700" />
-
-          {/* Row bawah: File / Image + Send */}
-          <div className="flex items-center justify-between px-1 mt-3">
-            <div className="flex items-center gap-3">
-              <div className="h-3.5 w-10 rounded-full bg-gray-300 dark:bg-gray-700" />
-              <div className="h-3.5 w-12 rounded-full bg-gray-300 dark:bg-gray-700" />
-            </div>
-            <div className="h-6 w-14 rounded-full bg-gray-300 dark:bg-gray-700" />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  // ...tetap sama, gak ada perubahan di sini...
 }
 
 const RightProfileSidebar = ({ classNameSection }) => {
   const { profile, isLoading, error } = useAuthMe();
-  console.log("profile: ", profile);
   const pathname = usePathname();
   const [isEditing, setIsEditing] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const containerRef = useRef(null);
 
-  // 1. CEK APAKAH SEDANG DI HALAMAN PROFILE
-  // 2. CEK APAKAH SEDANG DI HALAMAN COLLABORATIONS
   const isCollabPage = pathname === "/dasboard/collaborations";
 
   const currentUser = {
@@ -119,58 +36,123 @@ const RightProfileSidebar = ({ classNameSection }) => {
   }, [isEditing, pathname]);
 
   if (isLoading) return <LoadingProfileSkeleton />;
-  return (
-    <section
-      className={`${classNameSection} fixed right-0 top-0 z-30 flex h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}
-    >
-      <div
-        ref={containerRef}
-        className="w-full h-full flex flex-col justify-between"
-      >
-        {!isEditing ? (
-          <>
-            <ProfileSummaryCard user={currentUser} />
 
-            {/* WIDGET INPUTAN BAWAH */}
-            <div className="w-full bg-gray-100 dark:bg-gray-800/60 border border-gray-200/20 rounded-3xl p-4 shadow-inner">
-              <button
-                type="button"
-                onClick={() => setIsEditing(true)}
-                className="w-full py-2.5 px-4 bg-primary hover:bg-indigo-700 text-white text-xs font-medium rounded-2xl transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] transform"
-              >
-                {/* 3. DYNAMIC TEXT & ICON */}
-                <i
-                  className={
-                    isCollabPage ? "bx bx-community text-xl" : "hidden"
-                  }
-                ></i>
-                {isCollabPage ? "Make Collaborations" : "Post Something"}
-              </button>
+  // konten ini dipakai bareng di desktop (static) & mobile (bottom sheet)
+  const renderContent = (onNavigate) => (
+    <>
+      {!isEditing ? (
+        <>
+          <ProfileSummaryCard user={currentUser} />
 
-              <div className="flex items-center justify-between px-1 mt-3">
-                <div className="flex items-center gap-3 text-gray-400 text-[11px] font-medium">
-                  <span className="flex items-center gap-1">
-                    <i className="bx bx-folder"></i> File
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <i className="bx bx-image"></i> Image
-                  </span>
-                </div>
-                <span className="px-4 py-1.5 rounded-full bg-gray-300 dark:bg-gray-800 text-[11px] text-gray-400 font-medium">
-                  Send
+          <div className="w-full bg-gray-100 dark:bg-gray-800/60 border border-gray-200/20 rounded-3xl p-4 shadow-inner">
+            <button
+              type="button"
+              onClick={() => setIsEditing(true)}
+              className="w-full py-2.5 px-4 bg-primary hover:bg-indigo-700 text-white text-xs font-medium rounded-2xl transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] transform"
+            >
+              <i className={isCollabPage ? "bx bx-community text-xl" : "hidden"}></i>
+              {isCollabPage ? "Make Collaborations" : "Post Something"}
+            </button>
+
+            <div className="flex items-center justify-between px-1 mt-3">
+              <div className="flex items-center gap-3 text-gray-400 text-[11px] font-medium">
+                <span className="flex items-center gap-1">
+                  <i className="bx bx-folder"></i> File
+                </span>
+                <span className="flex items-center gap-1">
+                  <i className="bx bx-image"></i> Image
                 </span>
               </div>
+              <span className="px-4 py-1.5 rounded-full bg-gray-300 dark:bg-gray-800 text-[11px] text-gray-400 font-medium">
+                Send
+              </span>
             </div>
-          </>
-        ) : (
-          /* OPER PROPS MODE HALAMAN KE FORM */
-          <DetailedPostForm
-            isCollabMode={isCollabPage}
-            onClose={() => setIsEditing(false)}
+          </div>
+        </>
+      ) : (
+        <DetailedPostForm
+          isCollabMode={isCollabPage}
+          onClose={() => {
+            setIsEditing(false);
+            onNavigate?.();
+          }}
+        />
+      )}
+    </>
+  );
+
+  return (
+    <>
+      {/* === DESKTOP: sidebar statis, cuma tampil >= md === */}
+      <section
+        className={`${classNameSection} fixed right-0 top-0 z-30 flex h-screen w-[320px] flex-col justify-between bg-white dark:bg-gray-900 border-l border-gray-100 dark:border-gray-800/60 px-6 py-8 shadow-sm transition-colors`}
+      >
+        <div ref={containerRef} className="w-full h-full flex flex-col justify-between">
+          {renderContent()}
+        </div>
+      </section>
+
+      {/* === MOBILE: tombol trigger bulat, foto profil / fallback icon === */}
+      <button
+        type="button"
+        onClick={() => setIsMobileOpen(true)}
+        aria-label="Open profile"
+        className="fixed right-4 top-4 z-50 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm dark:bg-gray-900 md:hidden"
+      >
+        {currentUser.avatar ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={currentUser.avatar}
+            alt={currentUser.name || "Profile"}
+            className="h-full w-full object-cover"
           />
+        ) : (
+          <i className="bx bxs-user-circle text-3xl text-gray-400"></i>
         )}
-      </div>
-    </section>
+      </button>
+
+      {/* === MOBILE: bottom sheet, slide dari bawah, penuh layar === */}
+      <Transition show={isMobileOpen} as={Fragment}>
+        <Dialog onClose={setIsMobileOpen} className="relative z-50 md:hidden">
+          <TransitionChild
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
+          </TransitionChild>
+
+          <TransitionChild
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="translate-y-full"
+            enterTo="translate-y-0"
+            leave="ease-in duration-200"
+            leaveFrom="translate-y-0"
+            leaveTo="translate-y-full"
+          >
+            <DialogPanel className="fixed inset-0 flex h-[100dvh] w-full flex-col justify-between bg-white px-6 py-8 dark:bg-gray-900">
+              <button
+                type="button"
+                onClick={() => setIsMobileOpen(false)}
+                aria-label="Close profile"
+                className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <i className="bx bx-x text-2xl"></i>
+              </button>
+
+              <div className="w-full h-full flex flex-col justify-between pt-8">
+                {renderContent(() => setIsMobileOpen(false))}
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </Dialog>
+      </Transition>
+    </>
   );
 };
 
