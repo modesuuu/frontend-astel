@@ -9,6 +9,7 @@ const CommentItem = ({ comment, onDelete, currentUserId }) => {
   return (
     <div className="relative flex flex-col gap-2 border-b border-gray-50 dark:border-gray-900/50 pb-4 last:border-0">
       <Profile
+        id={comment.userId}
         avatar={comment.avatarUrl}
         name={comment.username}
         time={comment.time}
