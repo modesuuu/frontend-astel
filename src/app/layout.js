@@ -43,6 +43,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${customFont.variable} h-full antialiased`}>
       <head>
+        <title>ASTEL</title>
         <link
           href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css"
           rel="stylesheet"
